@@ -1,2 +1,3 @@
-# Proyecto-Tp3
-Cadena de distribucion de suministros con grafos dirigidos aciclicos
+# Proyecto-Tp3 - Cadena de distribucion de suministros
+
+Instrucciones de Instalacion:
