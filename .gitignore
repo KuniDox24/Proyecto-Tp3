@@ -357,6 +357,9 @@ paket-files/
 # Tabs Studio
 *.tss
 
+.github
+.github/*
+
 # Telerik's JustMock configuration file
 *.jmconfig
 
@@ -418,3 +421,9 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+/Proyecto-Tp3/nbproject/private/
+/proyectotp3/target/
+/tp3/target/
+
+
+*.form
