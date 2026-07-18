@@ -11,20 +11,30 @@ import java.util.Map;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
+import java.util.Set;
+
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Nico
  */
-public class UiVentanaPrincipal extends javax.swing.JFrame {
+public class UIVentanaPrincipal extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(UiVentanaPrincipal.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(UIVentanaPrincipal.class.getName());
 
     /**
      * Creates new form UiVentanaPrincipal
      */
-    public UiVentanaPrincipal() {
+    public UIVentanaPrincipal() {
         initComponents();
+    }
+    public UIVentanaPrincipal(InterfazControlador _app){
+        app = _app;
+        initComponents();
+        setVisible(true);
     }
 
     /**
@@ -36,36 +46,45 @@ public class UiVentanaPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTabbedPane1 = new javax.swing.JTabbedPane();
+        javax.swing.JTabbedPane jTabbedPane1 = new javax.swing.JTabbedPane();
         PanelVistaGeneral = new javax.swing.JPanel();
         PanelEntidades = new javax.swing.JPanel();
         bAgregarEntidad = new javax.swing.JButton();
         bEliminarEntidad = new javax.swing.JButton();
         bActualizarContacto = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        TablaEntidades = new javax.swing.JTable();
+        tablaEntidades = new javax.swing.JTable();
+        bVerHistorial = new javax.swing.JButton();
+        bVerInventario = new javax.swing.JButton();
         javax.swing.JPanel PanelRutas = new javax.swing.JPanel();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        bAgregarRuta = new javax.swing.JButton();
+        bEliminarRuta = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tablaRutas = new javax.swing.JTable();
+        PanelViajes = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Administrador de Red de Suministros");
         setLocation(new java.awt.Point(80, 80));
+        setMinimumSize(new java.awt.Dimension(800, 600));
         setName("ventana"); // NOI18N
         setPreferredSize(new java.awt.Dimension(800, 600));
 
         jTabbedPane1.setTabPlacement(javax.swing.JTabbedPane.LEFT);
         jTabbedPane1.setMinimumSize(new java.awt.Dimension(800, 600));
+        jTabbedPane1.setPreferredSize(new java.awt.Dimension(800, 600));
         jTabbedPane1.setRequestFocusEnabled(false);
 
         javax.swing.GroupLayout PanelVistaGeneralLayout = new javax.swing.GroupLayout(PanelVistaGeneral);
         PanelVistaGeneral.setLayout(PanelVistaGeneralLayout);
         PanelVistaGeneralLayout.setHorizontalGroup(
             PanelVistaGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 733, Short.MAX_VALUE)
+            .addGap(0, 702, Short.MAX_VALUE)
         );
         PanelVistaGeneralLayout.setVerticalGroup(
             PanelVistaGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -86,13 +105,10 @@ public class UiVentanaPrincipal extends javax.swing.JFrame {
         bActualizarContacto.setMinimumSize(new java.awt.Dimension(150, 20));
         bActualizarContacto.addActionListener(this::bActualizarContactoActionPerformed);
 
-        TablaEntidades.setAutoCreateRowSorter(true);
-        TablaEntidades.setModel(new javax.swing.table.DefaultTableModel(
+        tablaEntidades.setAutoCreateRowSorter(true);
+        tablaEntidades.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "Nombre", "Rol", "Contacto", "Ubicacion"
@@ -113,11 +129,18 @@ public class UiVentanaPrincipal extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        TablaEntidades.setColumnSelectionAllowed(true);
-        TablaEntidades.setMaximumSize(new java.awt.Dimension(2147483647, 600));
-        TablaEntidades.setMinimumSize(new java.awt.Dimension(500, 80));
-        TablaEntidades.setPreferredSize(new java.awt.Dimension(500, 400));
-        jScrollPane1.setViewportView(TablaEntidades);
+        tablaEntidades.setMaximumSize(new java.awt.Dimension(2147483647, 600));
+        tablaEntidades.setMinimumSize(new java.awt.Dimension(500, 80));
+        tablaEntidades.setPreferredSize(new java.awt.Dimension(500, 400));
+        jScrollPane1.setViewportView(tablaEntidades);
+
+        bVerHistorial.setText("Ver Historial");
+        bVerHistorial.setMinimumSize(new java.awt.Dimension(150, 20));
+        bVerHistorial.addActionListener(this::bVerHistorialActionPerformed);
+
+        bVerInventario.setText("Ver Inventario");
+        bVerInventario.setMinimumSize(new java.awt.Dimension(150, 20));
+        bVerInventario.addActionListener(this::bVerInventarioActionPerformed);
 
         javax.swing.GroupLayout PanelEntidadesLayout = new javax.swing.GroupLayout(PanelEntidades);
         PanelEntidades.setLayout(PanelEntidadesLayout);
@@ -129,8 +152,10 @@ public class UiVentanaPrincipal extends javax.swing.JFrame {
                     .addComponent(bAgregarEntidad, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(PanelEntidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(bEliminarEntidad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(bActualizarContacto, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                        .addComponent(bActualizarContacto, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                        .addComponent(bVerHistorial, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                        .addComponent(bVerInventario, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 549, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -143,6 +168,10 @@ public class UiVentanaPrincipal extends javax.swing.JFrame {
                 .addComponent(bEliminarEntidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(67, 67, 67)
                 .addComponent(bActualizarContacto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(67, 67, 67)
+                .addComponent(bVerHistorial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(67, 67, 67)
+                .addComponent(bVerInventario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(PanelEntidadesLayout.createSequentialGroup()
                 .addContainerGap()
@@ -152,34 +181,26 @@ public class UiVentanaPrincipal extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Entidades", PanelEntidades);
 
-        jButton4.setText("Agregar Ruta");
-        jButton4.setMaximumSize(new java.awt.Dimension(160, 30));
-        jButton4.setMinimumSize(new java.awt.Dimension(150, 20));
-        jButton4.addActionListener(this::jButton4ActionPerformed);
+        bAgregarRuta.setText("Agregar Ruta");
+        bAgregarRuta.setMaximumSize(new java.awt.Dimension(160, 30));
+        bAgregarRuta.setMinimumSize(new java.awt.Dimension(150, 20));
+        bAgregarRuta.addActionListener(this::bAgregarRutaActionPerformed);
 
-        jButton5.setText("Modificar Ruta");
-        jButton5.setMaximumSize(new java.awt.Dimension(160, 30));
-        jButton5.setMinimumSize(new java.awt.Dimension(150, 20));
-        jButton5.addActionListener(this::jButton5ActionPerformed);
+        bEliminarRuta.setText("Eliminar Ruta");
+        bEliminarRuta.setMaximumSize(new java.awt.Dimension(160, 30));
+        bEliminarRuta.setMinimumSize(new java.awt.Dimension(150, 20));
+        bEliminarRuta.addActionListener(this::bEliminarRutaActionPerformed);
 
-        jButton6.setText("Eliminar Ruta");
-        jButton6.setMaximumSize(new java.awt.Dimension(160, 30));
-        jButton6.setMinimumSize(new java.awt.Dimension(150, 20));
-        jButton6.addActionListener(this::jButton6ActionPerformed);
-
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tablaRutas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
                 "Origen", "Destino", "Distancia"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Double.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false
@@ -193,7 +214,7 @@ public class UiVentanaPrincipal extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(tablaRutas);
 
         javax.swing.GroupLayout PanelRutasLayout = new javax.swing.GroupLayout(PanelRutas);
         PanelRutas.setLayout(PanelRutasLayout);
@@ -202,10 +223,9 @@ public class UiVentanaPrincipal extends javax.swing.JFrame {
             .addGroup(PanelRutasLayout.createSequentialGroup()
                 .addGap(38, 38, 38)
                 .addGroup(PanelRutasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                    .addComponent(bAgregarRuta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(bEliminarRuta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 549, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -213,11 +233,9 @@ public class UiVentanaPrincipal extends javax.swing.JFrame {
             PanelRutasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelRutasLayout.createSequentialGroup()
                 .addGap(67, 67, 67)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(67, 67, 67)
-                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(67, 67, 67)
-                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(bAgregarRuta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(157, 157, 157)
+                .addComponent(bEliminarRuta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(PanelRutasLayout.createSequentialGroup()
                 .addContainerGap()
@@ -226,6 +244,78 @@ public class UiVentanaPrincipal extends javax.swing.JFrame {
         );
 
         jTabbedPane1.addTab("Rutas", PanelRutas);
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null}
+            },
+            new String [] {
+                "ID", "Emisor", "Receptor", "Tiempo de llegada"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane3.setViewportView(jTable1);
+
+        jButton1.setText("Hacer Envio");
+        jButton1.setMaximumSize(new java.awt.Dimension(200, 30));
+        jButton1.setMinimumSize(new java.awt.Dimension(100, 20));
+        jButton1.setPreferredSize(new java.awt.Dimension(150, 20));
+
+        jButton2.setText("Cancelar Envio");
+        jButton2.setMaximumSize(new java.awt.Dimension(200, 30));
+        jButton2.setMinimumSize(new java.awt.Dimension(100, 20));
+        jButton2.setPreferredSize(new java.awt.Dimension(150, 20));
+
+        jButton3.setText("Inspeccionar Envio");
+        jButton3.setMaximumSize(new java.awt.Dimension(200, 30));
+        jButton3.setMinimumSize(new java.awt.Dimension(100, 20));
+        jButton3.setPreferredSize(new java.awt.Dimension(150, 20));
+
+        javax.swing.GroupLayout PanelViajesLayout = new javax.swing.GroupLayout(PanelViajes);
+        PanelViajes.setLayout(PanelViajesLayout);
+        PanelViajesLayout.setHorizontalGroup(
+            PanelViajesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelViajesLayout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addGroup(PanelViajesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        PanelViajesLayout.setVerticalGroup(
+            PanelViajesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PanelViajesLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 588, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(PanelViajesLayout.createSequentialGroup()
+                .addGap(59, 59, 59)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(60, 60, 60)
+                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Envios", PanelViajes);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -242,29 +332,88 @@ public class UiVentanaPrincipal extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+
+    //=====================
+    //BOTONES
+
+    //=================================
+    //menu entidades
+
+    //agregar entidad
     private void bAgregarEntidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAgregarEntidadActionPerformed
-        // TODO add your handling code here:
+        FormEntidad formulario = new FormEntidad(app);
+        formulario.setVisible(true);
+
     }//GEN-LAST:event_bAgregarEntidadActionPerformed
 
+    //eliminar entidad seleccionada
     private void bEliminarEntidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bEliminarEntidadActionPerformed
-        // TODO add your handling code here:
+        int fila = tablaEntidades.getSelectedRow();
+        if(fila == -1){
+            JOptionPane.showMessageDialog(this, "Por Favor seleccione una fila");
+        }
+        String nombre = (String)tablaEntidades.getValueAt(fila, 0);
+        int respuesta = JOptionPane.showConfirmDialog(this, "Desea eliminar esta entidad? ("+nombre+")","confirmar",JOptionPane.YES_NO_OPTION);
+
+        if(respuesta != JOptionPane.YES_OPTION){
+            return;
+        }
+
+        
+        app.eliminarNodo(nombre);
+        actualizarGrafo(app.getGrafo());
+
     }//GEN-LAST:event_bEliminarEntidadActionPerformed
 
+    //actualizar una entidad
     private void bActualizarContactoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bActualizarContactoActionPerformed
-        // TODO add your handling code here:
+        //TODO actualizar info
+        int fila = tablaEntidades.getSelectedRow();
+        if(fila == -1){
+            JOptionPane.showMessageDialog(this, "Por Favor seleccione una fila");
+        }
+        String nombre = (String)tablaEntidades.getValueAt(fila, 0);
+        String rol = (String)tablaEntidades.getValueAt(fila, 1);
+        String contacto = (String)tablaEntidades.getValueAt(fila, 2);
+        String ubicacion = (String)tablaEntidades.getValueAt(fila, 4);
+        FormEntidad formulario = new FormEntidad();
     }//GEN-LAST:event_bActualizarContactoActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    
+    private void bVerHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bVerHistorialActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_bVerHistorialActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void bVerInventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bVerInventarioActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton5ActionPerformed
+    }//GEN-LAST:event_bVerInventarioActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton6ActionPerformed
+
+    //==================================
+    //menu rutas
+
+
+    private void bAgregarRutaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAgregarRutaActionPerformed
+        FormRuta formulario = new FormRuta(app);
+        formulario.setVisible(true);
+    }//GEN-LAST:event_bAgregarRutaActionPerformed
+
+    private void bEliminarRutaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bEliminarRutaActionPerformed
+        int fila = tablaRutas.getSelectedRow();
+        if(fila == -1){
+            JOptionPane.showMessageDialog(this, "Por Favor seleccione una fila");
+        }
+        String origen = (String)tablaRutas.getValueAt(fila, 0);
+        String destino = (String)tablaRutas.getValueAt(fila, 1);
+        int respuesta = JOptionPane.showConfirmDialog(this, "Desea eliminar la ruta? ("+origen+":"+destino+")","confirmar",JOptionPane.YES_NO_OPTION);
+
+        if(respuesta != JOptionPane.YES_OPTION){
+            return;
+        }
+
+        
+        app.eliminarRuta(origen, destino);
+        actualizarGrafo(app.getGrafo());
+    }//GEN-LAST:event_bEliminarRutaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -288,10 +437,53 @@ public class UiVentanaPrincipal extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new UiVentanaPrincipal().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new UIVentanaPrincipal().setVisible(true));
     }
 
-    public void setGrafo(Graph<Entidad,Ruta> grafoOriginal){
+    //=====================================
+    //actualizadores
+
+    public void actualizarGrafo(Graph<Entidad,Ruta> grafo){
+        actualizarEntidades(grafo);
+        setGrafo(grafo);
+        actualizarRutas(grafo);
+    }
+
+    public void actualizarEntidades(Graph<Entidad,Ruta> g){
+        DefaultTableModel modelo = (DefaultTableModel)tablaEntidades.getModel();
+        modelo.setRowCount(0);
+        for(Entidad e : g.vertexSet()){
+            Object[] fila = {
+                e.getNombre(),
+                e.getRol(),
+                e.getContacto(),
+                "("+e.getUbicacion()[0]+","+e.getUbicacion()[1]+")"
+
+            };
+            modelo.addRow(fila);
+        }
+    }
+    
+
+
+    public void actualizarRutas(Graph<Entidad,Ruta> g){
+
+        DefaultTableModel modelo =(DefaultTableModel)tablaRutas.getModel();
+        modelo.setRowCount(0);
+
+        for(Ruta r : g.edgeSet()){
+            Object[] fila = {
+                r.getOrigen(),
+                r.getDestino(),
+                r.getDistancia()
+            };
+            modelo.addRow(fila);
+        }
+        
+    }
+
+    //actualiza el grafo en pantalla
+    private void setGrafo(Graph<Entidad,Ruta> grafoOriginal){
         //Limpia el panel del grafo anterior
         PanelVistaGeneral.removeAll();
         PanelVistaGeneral.setLayout(new java.awt.BorderLayout());
@@ -332,23 +524,29 @@ public class UiVentanaPrincipal extends javax.swing.JFrame {
         PanelVistaGeneral.add(grafoVisual, java.awt.BorderLayout.CENTER);
         PanelVistaGeneral.revalidate();
         PanelVistaGeneral.repaint();
-        PanelVistaGeneral.setVisible(true);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel PanelEntidades;
+    private javax.swing.JPanel PanelViajes;
     private javax.swing.JPanel PanelVistaGeneral;
-    private javax.swing.JTable TablaEntidades;
     private javax.swing.JButton bActualizarContacto;
     private javax.swing.JButton bAgregarEntidad;
+    private javax.swing.JButton bAgregarRuta;
     private javax.swing.JButton bEliminarEntidad;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
+    private javax.swing.JButton bEliminarRuta;
+    private javax.swing.JButton bVerHistorial;
+    private javax.swing.JButton bVerInventario;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tablaEntidades;
+    private javax.swing.JTable tablaRutas;
     // End of variables declaration//GEN-END:variables
-    private mxGraphComponent grafoVisual;
+    private mxGraphComponent grafoVisual; //componente visual para ver grafos
+    private InterfazControlador app;
 }

@@ -9,6 +9,7 @@ public class Entidad {
     private ArrayList<String> historial; //historial de entradas y salidas
     private int[] ubicacion = {0,0}; //donde se ubica la entidad
     private String contacto; //contacto de la entidad
+    private ROLES rol;
 
     @Override
     public String toString(){
@@ -22,12 +23,13 @@ public class Entidad {
         historial = new ArrayList<>();
     }
 
-    public Entidad(String _nombre, int[] _ubicacion, String _contacto){
+    public Entidad(String _nombre, int[] _ubicacion, String _contacto, String _rol){
         ubicacion = _ubicacion;
         nombre = _nombre;
         contacto = _contacto;
         historial = new ArrayList<>();
         inventario = new ArrayList<>();
+        rol = ROLES.valueOf(_rol);
     }
 
     //getters
@@ -46,7 +48,9 @@ public class Entidad {
     public int[] getUbicacion() {
         return ubicacion;
     }
-
+    public String getRol(){
+        return rol.toString();
+    }
 
 
     //metodos

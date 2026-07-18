@@ -18,4 +18,19 @@ public class Ruta {
         return distancia + "Km";
     }
 
+    //getters
+
+    public String getDestino() {
+        return destino;
+    }
+    public double getDistancia() {
+        return distancia;
+    }
+    public ArrayList<Paquete> getEnCamino() {
+        return enCamino;
+    }
+    public String getOrigen() {
+        return origen;
+    }
+
 }
