@@ -12,6 +12,7 @@ import java.util.Map;
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 import java.util.Set;
+import java.util.Vector;
 
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -327,17 +328,21 @@ public class UIVentanaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
 
-    //=====================
-    //BOTONES
 
-    //=================================
-    //menu entidades
 
-    //agregar entidad
+
+
+
+
+
+    //===============================================================================
+    //MENU DE ENTIDADES
+
+
+    //agregar entidad: crea un nuevo formulario de entidades
     private void bAgregarEntidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAgregarEntidadActionPerformed
         FormEntidad formulario = new FormEntidad(app);
         formulario.setVisible(true);
-
     }//GEN-LAST:event_bAgregarEntidadActionPerformed
 
     //eliminar entidad seleccionada
@@ -353,14 +358,10 @@ public class UIVentanaPrincipal extends javax.swing.JFrame {
         if(respuesta != JOptionPane.YES_OPTION){
             return;
         }
-
-        
         app.eliminarNodo(nombre);
-        actualizarGrafo(app.getGrafo());
-
     }//GEN-LAST:event_bEliminarEntidadActionPerformed
-
    
+    //TODO desacoplar Historial
     private void bVerHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bVerHistorialActionPerformed
         int fila = tablaEntidades.getSelectedRow();
         if(fila == -1){
@@ -372,6 +373,7 @@ public class UIVentanaPrincipal extends javax.swing.JFrame {
         ventana.setVisible(true);
     }//GEN-LAST:event_bVerHistorialActionPerformed
 
+    //TODO ayuda
     private void bVerInventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bVerInventarioActionPerformed
         int fila = tablaEntidades.getSelectedRow();
         if(fila == -1){
@@ -384,45 +386,74 @@ public class UIVentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_bVerInventarioActionPerformed
 
 
-    //==================================
-    //menu rutas
 
 
+
+
+
+    //===============================================================
+    //MENU RUTAS
+
+    //al presionar agregar ruta: crear formulario de rutas
     private void bAgregarRutaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAgregarRutaActionPerformed
         FormRuta formulario = new FormRuta(app);
         formulario.setVisible(true);
     }//GEN-LAST:event_bAgregarRutaActionPerformed
 
+    //al presionar eliminbar ruta: 
     private void bEliminarRutaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bEliminarRutaActionPerformed
         int fila = tablaRutas.getSelectedRow();
         if(fila == -1){
             JOptionPane.showMessageDialog(this, "Por Favor seleccione una fila");
+            return;
         }
         String origen = (String)tablaRutas.getValueAt(fila, 0);
         String destino = (String)tablaRutas.getValueAt(fila, 1);
         int respuesta = JOptionPane.showConfirmDialog(this, "Desea eliminar la ruta? ("+origen+":"+destino+")","confirmar",JOptionPane.YES_NO_OPTION);
-
         if(respuesta != JOptionPane.YES_OPTION){
             return;
         }
-
-        
         app.eliminarRuta(origen, destino);
-        actualizarGrafo(app.getGrafo());
     }//GEN-LAST:event_bEliminarRutaActionPerformed
 
-    private void bInspeccionarEnvioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bInspeccionarEnvioActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_bInspeccionarEnvioActionPerformed
 
-    private void bCancelarEnvioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bCancelarEnvioActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_bCancelarEnvioActionPerformed
 
+
+
+
+
+
+
+
+    //=============================================
+    // MENU ENVIOS
+
+    //al presionar hacer un envio: crear formulario de envios
     private void bHacerEnvioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bHacerEnvioActionPerformed
-        // TODO add your handling code here:
+        FormEnvios formulario = new FormEnvios(app);
+        formulario.setVisible(true);
     }//GEN-LAST:event_bHacerEnvioActionPerformed
 
+    //al presionar inspeccionar un envio TODO
+    private void bInspeccionarEnvioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bInspeccionarEnvioActionPerformed
+        int fila = jTable1.getSelectedRow();
+        if(fila == -1){
+            JOptionPane.showMessageDialog(this, "Por Favor seleccione una fila");
+            return;
+        }
+    }//GEN-LAST:event_bInspeccionarEnvioActionPerformed
+
+    //al presionar cancelar envio TODO
+    private void bCancelarEnvioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bCancelarEnvioActionPerformed
+        int fila = jTable1.getSelectedRow();
+        if(fila == -1){
+            JOptionPane.showMessageDialog(this, "Por Favor seleccione una fila");
+            return;
+        }
+        app.cancelarEnvio((int)jTable1.getValueAt(fila, 0));
+    }//GEN-LAST:event_bCancelarEnvioActionPerformed
+
+    
     /**
      * @param args the command line arguments
      */
@@ -488,10 +519,15 @@ public class UIVentanaPrincipal extends javax.swing.JFrame {
         
     }
 
-    public void actualizarInventario(){
+    public void actualizarEnvios(){
+
+       jTable1.setModel(app.getTablaEnvios((DefaultTableModel)jTable1.getModel()));
+
+        
+
     }
 
-    //actualiza el grafo en pantalla
+    //actualiza el grafo en pantalla TODO desacoplar
     private void setGrafo(Graph<Entidad,Ruta> grafoOriginal){
         //Limpia el panel del grafo anterior
         PanelVistaGeneral.removeAll();

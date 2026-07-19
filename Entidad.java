@@ -25,6 +25,7 @@ public class Entidad {
         ubicacion = _ubicacion;
         nombre = _nombre;
         contacto = _contacto;
+        enEspera = new Vector<>();
         historial = new Vector<>();
         rol = ROLES.valueOf(_rol);
     }
@@ -52,7 +53,14 @@ public class Entidad {
     public void recibirEnvio(Envio nuevo){
         enEspera.add(nuevo);
     }
+    
+    public void eliminarEnvio(Envio cancelado){
+        enEspera.remove(cancelado);
+    }
+
     public void liberarEnvio(Envio porLiberar){
+        
+        porLiberar.avanzar();
         enEspera.remove(porLiberar);
 
     }

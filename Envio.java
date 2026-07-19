@@ -1,3 +1,4 @@
+import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.Vector;
 
@@ -17,6 +18,7 @@ public class Envio {
         origen = _origen;
         destino = _destino;
         ubicacion = _origen;
+        camino = new ArrayDeque<>();
 
         for(Ruta r : _camino){
             camino.add(r);
@@ -35,15 +37,19 @@ public class Envio {
         tiempoEspera = distanciaTotal/45;
     }
 
-    public void avanzar(){
+    public boolean avanzar(){
         if(estado == ESTADO.EN_ESPERA){
             ubicacion = camino.peek().getOrigen()+"->"+camino.peek().getDestino();
             estado = ESTADO.EN_VIA;
         } else {
             ubicacion = camino.remove().getDestino();
             estado = ESTADO.EN_ESPERA;
+            if(camino.isEmpty()){
+                return true;
+            }
         }
         calcularTiempo();
+        return false;
 
 
 
@@ -66,6 +72,9 @@ public class Envio {
     }
     public String getUbicacion() {
         return ubicacion;
+    }
+    public Ruta geRutaActual(){
+        return camino.peek();
     }
 
 

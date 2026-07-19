@@ -10,6 +10,7 @@ public class Ruta {
         origen = _origen;
         destino = _destino;
         distancia = _distancia;
+        enCamino = new Vector<>();
     }
 
     @Override
@@ -37,8 +38,14 @@ public class Ruta {
         enCamino.add(nuevo);
     }
 
+    public void cancelarTransporte(Envio cancelado){
+        enCamino.remove(cancelado);
+
+    }
+
     public void finalizarTransporte(Envio entregado){
         enCamino.remove(entregado);
+        entregado.avanzar();
     }
     
 }

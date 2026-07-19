@@ -29,8 +29,8 @@ public class FormEnvios extends javax.swing.JFrame {
 
     public FormEnvios(InterfazControlador _app){
         initComponents();
-        selectorReceptor.setEnabled(false);
         app = _app;
+        actualizarObjetivos();
     }
     public FormEnvios(InterfazControlador _app, Entidad origen){
         initComponents();
@@ -200,19 +200,30 @@ public class FormEnvios extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void selectorReceptorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectorReceptorActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_selectorReceptorActionPerformed
 
-    private void selectorEmisorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectorEmisorActionPerformed
-        
-    }//GEN-LAST:event_selectorEmisorActionPerformed
+    
+    private void selectorEmisorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAgregarPaqueteActionPerformed    
+    }//GEN-LAST:event_bAgregarPaqueteActionPerformed
+
+    private void selectorReceptorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAgregarPaqueteActionPerformed    
+    }//GEN-LAST:event_bAgregarPaqueteActionPerformed
 
     private void bAgregarPaqueteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAgregarPaqueteActionPerformed    
     }//GEN-LAST:event_bAgregarPaqueteActionPerformed
 
+    //al presionar confirmar
     private void bConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bConfirmarActionPerformed
-        // TODO crear el envio
+        String origen = selectorEmisor.getSelectedItem().toString();
+        String detino = selectorReceptor.getSelectedItem().toString();
+        if(origen.equals(detino)){
+                JOptionPane.showMessageDialog(this, "El origen y destino deben ser diferentes");
+            return;
+        }
+        if(app.nuevoEnvio(origen, detino) == -1){
+            JOptionPane.showMessageDialog(this, "no hay caminos posibles entre las entidades");
+            return;
+        }
+        setVisible(false);
         
     }//GEN-LAST:event_bConfirmarActionPerformed
 
@@ -222,14 +233,10 @@ public class FormEnvios extends javax.swing.JFrame {
 
 
     private void actualizarObjetivos(){
-        Set<Entidad> objetivos = app.getGrafo().vertexSet();
-        Vector<String> opciones = new Vector<>();
-        for(Entidad e : objetivos){
-            opciones.add(e.getNombre());
-        }
-        selectorReceptor.setModel(new DefaultComboBoxModel<String>(opciones));
-        selectorEmisor.setModel(new DefaultComboBoxModel<>(opciones));
 
+        Vector<String> opciones = app.getOpciones();
+        selectorReceptor.setModel(new DefaultComboBoxModel<String>(opciones));
+        selectorEmisor.setModel(new DefaultComboBoxModel<String>(opciones));
     }
 
 
