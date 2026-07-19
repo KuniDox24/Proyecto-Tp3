@@ -52,15 +52,22 @@ public class Entidad {
  
     public void recibirEnvio(Envio nuevo){
         enEspera.add(nuevo);
+        historial.add("[RECIBIDO]: "+ nuevo.getID()+"<"+nuevo.getContenido()+">");
     }
     
     public void eliminarEnvio(Envio cancelado){
         enEspera.remove(cancelado);
+        historial.add("[CANCELADO]: "+cancelado.getID()+"<"+cancelado.getContenido()+">");
+    }
+
+    public boolean tieneEnvios(){
+        return !enEspera.isEmpty();
     }
 
     public void liberarEnvio(Envio porLiberar){
         
         porLiberar.avanzar();
+        historial.add("[LIBERADO]: "+porLiberar.getID()+"<"+porLiberar.getContenido()+">");
         enEspera.remove(porLiberar);
 
     }

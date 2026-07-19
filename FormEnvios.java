@@ -2,15 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-
-import java.io.Console;
-import java.util.Set;
 import java.util.Vector;
 
-import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -61,71 +56,25 @@ public class FormEnvios extends javax.swing.JFrame {
         selectorReceptor = new javax.swing.JComboBox<>();
         javax.swing.JLabel jLabel1 = new javax.swing.JLabel();
         javax.swing.JLabel jLabel2 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tablaPaquetes = new javax.swing.JTable();
         bConfirmar = new javax.swing.JButton();
-        entradaID = new javax.swing.JSpinner();
-        bAgregarPaquete = new javax.swing.JButton();
-        bEliminar = new javax.swing.JButton();
         javax.swing.JLabel jLabel4 = new javax.swing.JLabel();
-        javax.swing.JLabel jLabel5 = new javax.swing.JLabel();
-        javax.swing.JLabel jLabel6 = new javax.swing.JLabel();
-        entradaCantidad = new javax.swing.JSpinner();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        entradaContenido = new javax.swing.JTextArea();
 
         setTitle("Solucitud de Envio");
-
-        selectorEmisor.addActionListener(this::selectorEmisorActionPerformed);
-
-        selectorReceptor.addActionListener(this::selectorReceptorActionPerformed);
 
         jLabel1.setText("Emisor");
 
         jLabel2.setText("Receptor");
 
-        tablaPaquetes.setAutoCreateColumnsFromModel(false);
-        tablaPaquetes.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "ID", "Contenido", "Cantidad", "Peso"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Double.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane1.setViewportView(tablaPaquetes);
-
         bConfirmar.setText("Confirmar");
         bConfirmar.addActionListener(this::bConfirmarActionPerformed);
 
-        entradaID.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
+        jLabel4.setText("Contenido del Envio:");
 
-        bAgregarPaquete.setText("Agregar Paquete");
-        bAgregarPaquete.addActionListener(this::bAgregarPaqueteActionPerformed);
-
-        bEliminar.setText("RetirarPaquete");
-        bEliminar.addActionListener(this::bEliminarActionPerformed);
-
-        jLabel4.setText("Paquetes del envio");
-
-        jLabel5.setText("ID");
-
-        jLabel6.setText("Cantidad");
-
-        entradaCantidad.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
+        entradaContenido.setColumns(20);
+        entradaContenido.setRows(5);
+        jScrollPane2.setViewportView(entradaContenido);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -135,38 +84,25 @@ public class FormEnvios extends javax.swing.JFrame {
                 .addGap(207, 207, 207)
                 .addComponent(bConfirmar)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(bEliminar)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(17, 17, 17))
             .addGroup(layout.createSequentialGroup()
                 .addGap(38, 38, 38)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(239, 239, 239)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(entradaID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(32, 32, 32)
-                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(entradaCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(32, 32, 32)
-                                .addComponent(bAgregarPaquete)))
-                        .addContainerGap(9, Short.MAX_VALUE))
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(239, 239, 239)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap(82, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(selectorEmisor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(selectorReceptor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(37, 37, 37))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(42, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 393, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(56, 56, 56))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -181,18 +117,9 @@ public class FormEnvios extends javax.swing.JFrame {
                     .addComponent(selectorReceptor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel4)
-                .addGap(19, 19, 19)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(entradaID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(bAgregarPaquete)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel6)
-                    .addComponent(entradaCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(bEliminar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 169, Short.MAX_VALUE)
                 .addComponent(bConfirmar)
                 .addGap(15, 15, 15))
         );
@@ -201,35 +128,24 @@ public class FormEnvios extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
 
-    
-    private void selectorEmisorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAgregarPaqueteActionPerformed    
-    }//GEN-LAST:event_bAgregarPaqueteActionPerformed
-
-    private void selectorReceptorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAgregarPaqueteActionPerformed    
-    }//GEN-LAST:event_bAgregarPaqueteActionPerformed
-
-    private void bAgregarPaqueteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAgregarPaqueteActionPerformed    
-    }//GEN-LAST:event_bAgregarPaqueteActionPerformed
+                         
 
     //al presionar confirmar
     private void bConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bConfirmarActionPerformed
         String origen = selectorEmisor.getSelectedItem().toString();
         String detino = selectorReceptor.getSelectedItem().toString();
+        String contenido = entradaContenido.getText();
         if(origen.equals(detino)){
                 JOptionPane.showMessageDialog(this, "El origen y destino deben ser diferentes");
             return;
         }
-        if(app.nuevoEnvio(origen, detino) == -1){
+        if(app.nuevoEnvio(origen, detino, contenido) == -1){
             JOptionPane.showMessageDialog(this, "no hay caminos posibles entre las entidades");
             return;
         }
         setVisible(false);
         
     }//GEN-LAST:event_bConfirmarActionPerformed
-
-    private void bEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bEliminarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_bEliminarActionPerformed
 
 
     private void actualizarObjetivos(){
@@ -266,15 +182,11 @@ public class FormEnvios extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton bAgregarPaquete;
     private javax.swing.JButton bConfirmar;
-    private javax.swing.JButton bEliminar;
-    private javax.swing.JSpinner entradaCantidad;
-    private javax.swing.JSpinner entradaID;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea entradaContenido;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JComboBox<String> selectorEmisor;
     private javax.swing.JComboBox<String> selectorReceptor;
-    private javax.swing.JTable tablaPaquetes;
     // End of variables declaration//GEN-END:variables
     private InterfazControlador app;
 }

@@ -5,6 +5,7 @@ import java.util.Vector;
 public class Envio {
     public enum ESTADO { EN_VIA, EN_ESPERA };
     private int ID; //ID unico del envio
+    private String contenido; //contenido del envio
     private String origen; //que entidad lo envia
     private String destino; //cual es su destino final
     private Queue<Ruta> camino; //conjunto de rutas que debe recorrer el envio
@@ -13,11 +14,12 @@ public class Envio {
     private ESTADO estado;
 
 
-    public Envio(int _ID, String _origen, String _destino,Vector<Ruta> _camino){
+    public Envio(int _ID,String _contenido, String _origen, String _destino,Vector<Ruta> _camino){
         ID = _ID;
         origen = _origen;
         destino = _destino;
         ubicacion = _origen;
+        contenido = _contenido;
         camino = new ArrayDeque<>();
 
         for(Ruta r : _camino){
@@ -34,7 +36,7 @@ public class Envio {
         for(Ruta r : camino){
             distanciaTotal += r.getDistancia();
         }
-        tiempoEspera = distanciaTotal/45;
+        tiempoEspera = Math.round((distanciaTotal/45.0)*1000.0)/1000.0;
     }
 
     public boolean avanzar(){
@@ -55,6 +57,16 @@ public class Envio {
 
     }
 
+    public void nuevoDestino(String _destino,Vector<Ruta> _camino){
+        destino = _destino;
+        camino = new ArrayDeque<>();
+        for(Ruta r : _camino){
+            camino.add(r);
+        }
+        calcularTiempo();
+
+    }
+
     public int getID() {
         return ID;
     }
@@ -63,6 +75,9 @@ public class Envio {
     }
     public String getDestino() {
         return destino;
+    }
+    public String getContenido() {
+        return contenido;
     }
     public ESTADO getEstado() {
         return estado;

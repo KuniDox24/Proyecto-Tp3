@@ -9,12 +9,12 @@ public interface InterfazControlador {
     public Entidad buscarNodoNombre(String Nombre);
 
     public void agregarNodo(String nombre,int[] ubicacion ,String contacto, String rol);
-    public void eliminarNodo(String Nombre);
+    public int eliminarNodo(String Nombre);
     
     public Graph<Entidad, Ruta> getGrafo();
     
     public void agregarRuta(String origen, String objetivo);
-    public void eliminarRuta(String origen, String destino);
+    public int eliminarRuta(String origen, String destino);
 
 
     //===================
@@ -22,8 +22,9 @@ public interface InterfazControlador {
 
     public Vector<Envio> getEnviosActivos();
     public void avanzarEnvio(int ID);
-    public int nuevoEnvio(String origen, String destino);
+    public int nuevoEnvio(String origen, String destino, String contenido);
     public void cancelarEnvio(int ID);
+    public int cambiarDestino(int ID, String destino);
 
     //======================
     // UI

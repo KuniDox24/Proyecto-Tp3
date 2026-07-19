@@ -43,6 +43,10 @@ public class Ruta {
 
     }
 
+    public boolean tieneEnvios(){
+        return !enCamino.isEmpty();
+    }
+
     public void finalizarTransporte(Envio entregado){
         enCamino.remove(entregado);
         entregado.avanzar();

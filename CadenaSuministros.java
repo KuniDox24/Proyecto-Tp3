@@ -44,11 +44,16 @@ public class CadenaSuministros implements InterfazControlador {
         return encontrado;
     }
 
-    public void eliminarNodo(String Nombre){
+    public int eliminarNodo(String Nombre){
 
-        grafo.removeVertex(buscarNodoNombre(Nombre));
+        Entidad aEliminar = buscarNodoNombre(Nombre);
+        if(aEliminar.tieneEnvios()){
+            return -1;
+        }
+
+        grafo.removeVertex(aEliminar);
         ventana.actualizarGrafo(grafo);
-
+        return 0;
     }
 
 
@@ -57,8 +62,8 @@ public class CadenaSuministros implements InterfazControlador {
     //Gestion de Rutas (aristas del grafo)
 
     private double calcularDistancia(int[] a,int[] b){
-        
-        return Math.sqrt(Math.pow((b[0]-a[0]), 2) + Math.pow((b[1] - a[1]),2) ); 
+        double resultado = Math.sqrt(Math.pow((b[0]-a[0]), 2) + Math.pow((b[1] - a[1]),2) ); 
+        return Math.round(resultado*1000.0)/1000.0;
     }
 
     public void agregarRuta(String origen, String objetivo){
@@ -71,9 +76,15 @@ public class CadenaSuministros implements InterfazControlador {
         ventana.actualizarGrafo(grafo);
     }
 
-    public void eliminarRuta(String origen, String destino){
-        grafo.removeEdge(buscarNodoNombre(origen), buscarNodoNombre(destino));
+    public int eliminarRuta(String origen, String destino){
+
+        Ruta aEliminar = grafo.getEdge(buscarNodoNombre(origen), buscarNodoNombre(destino));
+        if(aEliminar.tieneEnvios()){
+            return -1;
+        }
+        grafo.removeEdge(aEliminar);
         ventana.actualizarGrafo(grafo);
+        return 0;
     }
 
     //=======================================
@@ -102,7 +113,7 @@ public class CadenaSuministros implements InterfazControlador {
         return new Vector<>(enviosActivos.values());
     }
 
-    public int nuevoEnvio( String origen, String destino){
+    public int nuevoEnvio( String origen, String destino, String contenido){
         int ID;
         do{
             ID =(int) (Math.random()*(9999999 - 1000000 + 1 ) + 100000);
@@ -114,7 +125,7 @@ public class CadenaSuministros implements InterfazControlador {
             return -1;
         }
 
-        Envio nuevo =  new Envio(ID, origen, destino,camino );
+        Envio nuevo =  new Envio(ID, contenido, origen, destino,camino );
 
         buscarNodoNombre(origen).recibirEnvio(nuevo);
         enviosActivos.put(ID, nuevo);
@@ -145,7 +156,26 @@ public class CadenaSuministros implements InterfazControlador {
         ventana.actualizarEnvios();
     }
 
+    public int cambiarDestino(int ID, String destino){
+        Envio actualizar = enviosActivos.get(ID);
+        if(actualizar.getEstado() == Envio.ESTADO.EN_VIA){
+            return -1;//EL DESTINO NO SE PUEDE CAMBIAR CUANDO ESTA EN VIA
+        }
+        String nombre = actualizar.getUbicacion();
+        if(nombre.equals(destino)){
+            return -2;//EL DESTINO NUEVO NO PUEDE SER LA UBICACION ACTUAL
+        }
 
+        Vector<Ruta> camino = obtenerCamino(buscarNodoNombre(nombre), buscarNodoNombre(destino));
+
+        if(camino == null){
+            return -3;//NO HAY CAMINO ENTRE LA UBICACION Y EL DESTINO
+        }
+
+        actualizar.nuevoDestino(destino, camino);
+
+        return 0;
+    }
 
     //=========================================
     //UI
@@ -169,9 +199,14 @@ public class CadenaSuministros implements InterfazControlador {
         for(Envio e : getEnviosActivos()){
             Object[] fila = {
                 e.getID(),
-                e.getOrigen(),
-                e.getDestino(),
-                e.getTiempoEspera()
+                e.getContenido(),
+                e.getUbicacion(),
+                e.getEstado().toString(),
+                e.getTiempoEspera(),
+                e.getDestino(), 
+                e.getOrigen()
+                
+                
             };
             modelo.addRow(fila);
         }
@@ -204,7 +239,7 @@ public class CadenaSuministros implements InterfazControlador {
         agregarRuta("A", "C");
         agregarRuta("C", "E");
 
-        nuevoEnvio("A", "E");
+        nuevoEnvio("A", "E","Berenjenas");
 
     }
 
