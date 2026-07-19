@@ -351,6 +351,7 @@ public class UIVentanaPrincipal extends javax.swing.JFrame {
         int fila = tablaEntidades.getSelectedRow();
         if(fila == -1){
             JOptionPane.showMessageDialog(this, "Por Favor seleccione una fila");
+            return;
         }
         String nombre = (String)tablaEntidades.getValueAt(fila, 0);
         int respuesta = JOptionPane.showConfirmDialog(this, "Desea eliminar esta entidad? ("+nombre+")","confirmar",JOptionPane.YES_NO_OPTION);
@@ -380,11 +381,25 @@ public class UIVentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_bActualizarContactoActionPerformed
     
     private void bVerHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bVerHistorialActionPerformed
-        // TODO add your handling code here:
+        int fila = tablaEntidades.getSelectedRow();
+        if(fila == -1){
+            JOptionPane.showMessageDialog(this, "Por Favor seleccione una fila");
+            return;
+        }
+        String nombre = tablaEntidades.getValueAt(fila, 0).toString();
+        UIHistorial ventana = new UIHistorial(app.buscarNodoNombre(nombre).getHistorial());
+        ventana.setVisible(true);
     }//GEN-LAST:event_bVerHistorialActionPerformed
 
     private void bVerInventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bVerInventarioActionPerformed
-        // TODO add your handling code here:
+        int fila = tablaEntidades.getSelectedRow();
+        if(fila == -1){
+            JOptionPane.showMessageDialog(this, "Por Favor seleccione una fila");
+            return;
+        }
+        String nombre = tablaEntidades.getValueAt(fila, 0).toString();
+        UIInventario inventario = new UIInventario(app.buscarNodoNombre(nombre),app);
+        inventario.setVisible(true);
     }//GEN-LAST:event_bVerInventarioActionPerformed
 
 
@@ -464,8 +479,6 @@ public class UIVentanaPrincipal extends javax.swing.JFrame {
         }
     }
     
-
-
     public void actualizarRutas(Graph<Entidad,Ruta> g){
 
         DefaultTableModel modelo =(DefaultTableModel)tablaRutas.getModel();
@@ -480,6 +493,9 @@ public class UIVentanaPrincipal extends javax.swing.JFrame {
             modelo.addRow(fila);
         }
         
+    }
+
+    public void actualizarInventario(){
     }
 
     //actualiza el grafo en pantalla

@@ -3,6 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 
+import java.util.Set;
+
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Nico
@@ -16,6 +21,13 @@ public class UIInventario extends javax.swing.JFrame {
      */
     public UIInventario() {
         initComponents();
+    }
+
+    public UIInventario(Entidad _seleccionado, InterfazControlador _app){
+        initComponents();
+        seleccionado = _seleccionado;
+        app = _app;
+        actualizarInventario();
     }
 
     /**
@@ -148,15 +160,29 @@ public class UIInventario extends javax.swing.JFrame {
     }//GEN-LAST:event_bModificarInventarioActionPerformed
 
     private void bAgregarInventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAgregarInventarioActionPerformed
-        // TODO add your handling code here:
+        FormPaquete formulario = new FormPaquete(seleccionado);
+        formulario.setVisible(true);
+        setVisible(false);
+
+
     }//GEN-LAST:event_bAgregarInventarioActionPerformed
 
     private void bEliminarInventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bEliminarInventarioActionPerformed
-        // TODO add your handling code here:
+        int fila = tablaInventario.getSelectedRow();
+        if(fila == -1){
+            JOptionPane.showMessageDialog(this, "Selecciona un paquete de la tabla");
+            return;
+        }
+        seleccionado.retirarPaquete((int)tablaInventario.getValueAt(fila, 0));
+        setVisible(false);
+
     }//GEN-LAST:event_bEliminarInventarioActionPerformed
 
     private void bRealizarEnvioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bRealizarEnvioActionPerformed
-        // TODO add your handling code here:
+        Set<Ruta> rutas = app.getGrafo().outgoingEdgesOf(seleccionado); //obtener todos los salientes del seleccionado
+        FormEnvios formulario = new FormEnvios(app,seleccionado);
+        formulario.setVisible(true);
+        setVisible(false);
     }//GEN-LAST:event_bRealizarEnvioActionPerformed
 
     /**
@@ -184,6 +210,23 @@ public class UIInventario extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(() -> new UIInventario().setVisible(true));
     }
 
+    public void actualizarInventario(){
+        DefaultTableModel modelo = (DefaultTableModel)tablaInventario.getModel();
+        modelo.setRowCount(0);
+
+        for(Paquete p : seleccionado.getInventario()){
+            Object[] fila = {
+                p.getID(),
+                p.getContenido(),
+                p.getCantidad(),
+                p.getPeso()
+            };
+            modelo.addRow(fila);
+
+        }
+
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bAgregarInventario;
     private javax.swing.JButton bEliminarInventario;
@@ -193,4 +236,6 @@ public class UIInventario extends javax.swing.JFrame {
     private javax.swing.JLabel labelEntidad;
     private javax.swing.JTable tablaInventario;
     // End of variables declaration//GEN-END:variables
+    private Entidad seleccionado;
+    private InterfazControlador app;
 }

@@ -59,8 +59,18 @@ public class Entidad {
         inventario.add(recibido);
 
         //luego se agrega al historial
-        historial.add("Recibido: " + recibido.getID() + " ( Contenido: "+ recibido.getContenido() +" x"+recibido.getCatidad()+" )");
+        historial.add("Recibido: " + recibido.getID() + " ( Contenido: "+ recibido.getContenido() +" x"+recibido.getCantidad()+" )");
     }
+    public Paquete retirarPaquete(int ID){
 
+        for(Paquete p : inventario){
+            if(p.getID() == ID){
+                inventario.remove(p);
+                return p;
+            }
+        }
+        return null;
+
+    }
 
 } 

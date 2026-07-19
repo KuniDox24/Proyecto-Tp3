@@ -1,5 +1,4 @@
 import org.jgrapht.*;
-import org.jgrapht.ext.JGraphXAdapter;
 import org.jgrapht.graph.SimpleDirectedWeightedGraph;
 
 public class CadenaSuministros implements InterfazControlador {
@@ -40,6 +39,12 @@ public class CadenaSuministros implements InterfazControlador {
 
     }
 
+    //=======================================================
+    //Paquetes 
+
+
+
+
     //====================================================
     //Gestion de Rutas (aristas del grafo)
 
@@ -75,6 +80,18 @@ public class CadenaSuministros implements InterfazControlador {
         agregarNodo("C", new int[]{2,6}, "Senal de humo","PROVEEDOR");
         agregarNodo("D", new int[]{-2,3}, "Senal de humo","ALMACEN");
         agregarNodo("E", new int[]{6,12}, "Senal de humo","DISTRIBUIDOR");
+
+        agregarRuta("A", "B");
+        agregarRuta("E", "B");
+        agregarRuta("D", "B");
+        agregarRuta("A", "D");
+        agregarRuta("A", "C");
+        agregarRuta("C", "E");
+
+
+        buscarNodoNombre("A").recibirPaquete(new Paquete(0, "Paranganicutiniricuaro", 4, 10));
+
+
 
     }
 

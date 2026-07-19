@@ -2,6 +2,8 @@ import org.jgrapht.*;
 
 public interface InterfazControlador {
 
+    public Entidad buscarNodoNombre(String Nombre);
+
     public void agregarNodo(String nombre,int[] ubicacion ,String contacto, String rol);
     public void eliminarNodo(String Nombre);
     
