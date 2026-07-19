@@ -1,15 +1,14 @@
-import java.util.ArrayList;
+import java.util.Vector;
 
 public class Entidad {
-    //que tipo de entidad es
     public enum ROLES {PROVEEDOR, DISTRIBUIDOR, ALMACEN, FABRICANTE, MINORISTA};
     
-    private ArrayList<Paquete> inventario; //paquetes a su disposicion
     private String nombre; //nombre de la entidad
-    private ArrayList<String> historial; //historial de entradas y salidas
+    private Vector<String> historial; //historial de entradas y salidas  de envios
     private int[] ubicacion = {0,0}; //donde se ubica la entidad
     private String contacto; //contacto de la entidad
-    private ROLES rol;
+    private ROLES rol; //rol de esa entidad
+    private Vector<Envio> enEspera; //envios en espera de revision
 
     @Override
     public String toString(){
@@ -18,17 +17,15 @@ public class Entidad {
 
     //constructores
     public Entidad(){
-        inventario = new ArrayList<>();
         nombre = "Nombre no Proporcionado.";
-        historial = new ArrayList<>();
+        historial = new Vector<>();
     }
 
     public Entidad(String _nombre, int[] _ubicacion, String _contacto, String _rol){
         ubicacion = _ubicacion;
         nombre = _nombre;
         contacto = _contacto;
-        historial = new ArrayList<>();
-        inventario = new ArrayList<>();
+        historial = new Vector<>();
         rol = ROLES.valueOf(_rol);
     }
 
@@ -36,11 +33,8 @@ public class Entidad {
     public String getContacto() {
         return contacto;
     }
-    public ArrayList<String> getHistorial() {
+    public Vector<String> getHistorial() {
         return historial;
-    }
-    public ArrayList<Paquete> getInventario() {
-        return inventario;
     }
     public String getNombre() {
         return nombre;
@@ -54,23 +48,13 @@ public class Entidad {
 
 
     //metodos
-    public void recibirPaquete(Paquete recibido){
-        //primero se agrega el inventario
-        inventario.add(recibido);
-
-        //luego se agrega al historial
-        historial.add("Recibido: " + recibido.getID() + " ( Contenido: "+ recibido.getContenido() +" x"+recibido.getCantidad()+" )");
+ 
+    public void recibirEnvio(Envio nuevo){
+        enEspera.add(nuevo);
     }
-    public Paquete retirarPaquete(int ID){
-
-        for(Paquete p : inventario){
-            if(p.getID() == ID){
-                inventario.remove(p);
-                return p;
-            }
-        }
-        return null;
+    public void liberarEnvio(Envio porLiberar){
+        enEspera.remove(porLiberar);
 
     }
-
-} 
+}
+    

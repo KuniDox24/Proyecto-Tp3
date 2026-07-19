@@ -26,4 +26,9 @@ public class Paquete {
         return peso;
     }
 
+    public int modificarCantidad(int mod){
+        cantidad += mod;
+        return cantidad;
+    }
+
 }

@@ -47,6 +47,7 @@ public class FormRuta extends javax.swing.JFrame {
         selectorDestino = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Formulario de Ruta");
         setMinimumSize(new java.awt.Dimension(400, 400));
 
         bConfirmarForm.setText("Confirmar");

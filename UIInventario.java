@@ -27,7 +27,6 @@ public class UIInventario extends javax.swing.JFrame {
         initComponents();
         seleccionado = _seleccionado;
         app = _app;
-        actualizarInventario();
     }
 
     /**
@@ -42,12 +41,12 @@ public class UIInventario extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaInventario = new javax.swing.JTable();
         javax.swing.JLabel jLabel1 = new javax.swing.JLabel();
-        labelEntidad = new javax.swing.JLabel();
         bAgregarInventario = new javax.swing.JButton();
         bModificarInventario = new javax.swing.JButton();
         bEliminarInventario = new javax.swing.JButton();
         bRealizarEnvio = new javax.swing.JButton();
 
+        setTitle("Vizualizar inventario");
         setMinimumSize(new java.awt.Dimension(300, 600));
         setPreferredSize(new java.awt.Dimension(500, 800));
 
@@ -81,9 +80,6 @@ public class UIInventario extends javax.swing.JFrame {
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Inventario");
-
-        labelEntidad.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelEntidad.setText("<entidad>");
 
         bAgregarInventario.setText("Agregar al inventario");
         bAgregarInventario.setMaximumSize(new java.awt.Dimension(200, 30));
@@ -122,8 +118,7 @@ public class UIInventario extends javax.swing.JFrame {
                             .addComponent(bAgregarInventario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(bModificarInventario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(bEliminarInventario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(bRealizarEnvio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(labelEntidad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(bRealizarEnvio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -136,9 +131,7 @@ public class UIInventario extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addGap(18, 18, 18)
-                        .addComponent(labelEntidad)
-                        .addGap(99, 99, 99)
+                        .addGap(133, 133, 133)
                         .addComponent(bAgregarInventario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(29, 29, 29)
                         .addComponent(bModificarInventario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -173,8 +166,7 @@ public class UIInventario extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Selecciona un paquete de la tabla");
             return;
         }
-        seleccionado.retirarPaquete((int)tablaInventario.getValueAt(fila, 0));
-        setVisible(false);
+        
 
     }//GEN-LAST:event_bEliminarInventarioActionPerformed
 
@@ -210,22 +202,6 @@ public class UIInventario extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(() -> new UIInventario().setVisible(true));
     }
 
-    public void actualizarInventario(){
-        DefaultTableModel modelo = (DefaultTableModel)tablaInventario.getModel();
-        modelo.setRowCount(0);
-
-        for(Paquete p : seleccionado.getInventario()){
-            Object[] fila = {
-                p.getID(),
-                p.getContenido(),
-                p.getCantidad(),
-                p.getPeso()
-            };
-            modelo.addRow(fila);
-
-        }
-
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bAgregarInventario;
@@ -233,7 +209,6 @@ public class UIInventario extends javax.swing.JFrame {
     private javax.swing.JButton bModificarInventario;
     private javax.swing.JButton bRealizarEnvio;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel labelEntidad;
     private javax.swing.JTable tablaInventario;
     // End of variables declaration//GEN-END:variables
     private Entidad seleccionado;

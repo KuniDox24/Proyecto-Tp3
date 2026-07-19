@@ -51,7 +51,6 @@ public class UIVentanaPrincipal extends javax.swing.JFrame {
         PanelEntidades = new javax.swing.JPanel();
         bAgregarEntidad = new javax.swing.JButton();
         bEliminarEntidad = new javax.swing.JButton();
-        bActualizarContacto = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaEntidades = new javax.swing.JTable();
         bVerHistorial = new javax.swing.JButton();
@@ -64,16 +63,15 @@ public class UIVentanaPrincipal extends javax.swing.JFrame {
         PanelViajes = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        bHacerEnvio = new javax.swing.JButton();
+        bCancelarEnvio = new javax.swing.JButton();
+        bInspeccionarEnvio = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Administrador de Red de Suministros");
         setLocation(new java.awt.Point(80, 80));
         setMinimumSize(new java.awt.Dimension(800, 600));
         setName("ventana"); // NOI18N
-        setPreferredSize(new java.awt.Dimension(800, 600));
 
         jTabbedPane1.setTabPlacement(javax.swing.JTabbedPane.LEFT);
         jTabbedPane1.setMinimumSize(new java.awt.Dimension(800, 600));
@@ -100,10 +98,6 @@ public class UIVentanaPrincipal extends javax.swing.JFrame {
         bEliminarEntidad.setText("Eliminar Entidad");
         bEliminarEntidad.setMinimumSize(new java.awt.Dimension(150, 20));
         bEliminarEntidad.addActionListener(this::bEliminarEntidadActionPerformed);
-
-        bActualizarContacto.setText("Actualizar Contacto");
-        bActualizarContacto.setMinimumSize(new java.awt.Dimension(150, 20));
-        bActualizarContacto.addActionListener(this::bActualizarContactoActionPerformed);
 
         tablaEntidades.setAutoCreateRowSorter(true);
         tablaEntidades.setModel(new javax.swing.table.DefaultTableModel(
@@ -152,7 +146,6 @@ public class UIVentanaPrincipal extends javax.swing.JFrame {
                     .addComponent(bAgregarEntidad, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(PanelEntidadesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(bEliminarEntidad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(bActualizarContacto, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
                         .addComponent(bVerHistorial, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
                         .addComponent(bVerInventario, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -166,11 +159,9 @@ public class UIVentanaPrincipal extends javax.swing.JFrame {
                 .addComponent(bAgregarEntidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(67, 67, 67)
                 .addComponent(bEliminarEntidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(67, 67, 67)
-                .addComponent(bActualizarContacto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(67, 67, 67)
+                .addGap(52, 52, 52)
                 .addComponent(bVerHistorial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(67, 67, 67)
+                .addGap(18, 18, 18)
                 .addComponent(bVerInventario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(PanelEntidadesLayout.createSequentialGroup()
@@ -270,20 +261,23 @@ public class UIVentanaPrincipal extends javax.swing.JFrame {
         });
         jScrollPane3.setViewportView(jTable1);
 
-        jButton1.setText("Hacer Envio");
-        jButton1.setMaximumSize(new java.awt.Dimension(200, 30));
-        jButton1.setMinimumSize(new java.awt.Dimension(100, 20));
-        jButton1.setPreferredSize(new java.awt.Dimension(150, 20));
+        bHacerEnvio.setText("Hacer Envio");
+        bHacerEnvio.setMaximumSize(new java.awt.Dimension(200, 30));
+        bHacerEnvio.setMinimumSize(new java.awt.Dimension(100, 20));
+        bHacerEnvio.setPreferredSize(new java.awt.Dimension(150, 20));
+        bHacerEnvio.addActionListener(this::bHacerEnvioActionPerformed);
 
-        jButton2.setText("Cancelar Envio");
-        jButton2.setMaximumSize(new java.awt.Dimension(200, 30));
-        jButton2.setMinimumSize(new java.awt.Dimension(100, 20));
-        jButton2.setPreferredSize(new java.awt.Dimension(150, 20));
+        bCancelarEnvio.setText("Cancelar Envio");
+        bCancelarEnvio.setMaximumSize(new java.awt.Dimension(200, 30));
+        bCancelarEnvio.setMinimumSize(new java.awt.Dimension(100, 20));
+        bCancelarEnvio.setPreferredSize(new java.awt.Dimension(150, 20));
+        bCancelarEnvio.addActionListener(this::bCancelarEnvioActionPerformed);
 
-        jButton3.setText("Inspeccionar Envio");
-        jButton3.setMaximumSize(new java.awt.Dimension(200, 30));
-        jButton3.setMinimumSize(new java.awt.Dimension(100, 20));
-        jButton3.setPreferredSize(new java.awt.Dimension(150, 20));
+        bInspeccionarEnvio.setText("Inspeccionar Envio");
+        bInspeccionarEnvio.setMaximumSize(new java.awt.Dimension(200, 30));
+        bInspeccionarEnvio.setMinimumSize(new java.awt.Dimension(100, 20));
+        bInspeccionarEnvio.setPreferredSize(new java.awt.Dimension(150, 20));
+        bInspeccionarEnvio.addActionListener(this::bInspeccionarEnvioActionPerformed);
 
         javax.swing.GroupLayout PanelViajesLayout = new javax.swing.GroupLayout(PanelViajes);
         PanelViajes.setLayout(PanelViajesLayout);
@@ -292,27 +286,27 @@ public class UIVentanaPrincipal extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelViajesLayout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addGroup(PanelViajesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 76, Short.MAX_VALUE)
+                    .addComponent(bCancelarEnvio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(bHacerEnvio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(bInspeccionarEnvio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(30, 30, 30))
         );
         PanelViajesLayout.setVerticalGroup(
             PanelViajesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelViajesLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 588, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(PanelViajesLayout.createSequentialGroup()
                 .addGap(59, 59, 59)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(bHacerEnvio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(60, 60, 60)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(bCancelarEnvio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(bInspeccionarEnvio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelViajesLayout.createSequentialGroup()
+                .addContainerGap(21, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 564, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15))
         );
 
         jTabbedPane1.addTab("Envios", PanelViajes);
@@ -366,20 +360,7 @@ public class UIVentanaPrincipal extends javax.swing.JFrame {
 
     }//GEN-LAST:event_bEliminarEntidadActionPerformed
 
-    //actualizar una entidad
-    private void bActualizarContactoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bActualizarContactoActionPerformed
-        //TODO actualizar info
-        int fila = tablaEntidades.getSelectedRow();
-        if(fila == -1){
-            JOptionPane.showMessageDialog(this, "Por Favor seleccione una fila");
-        }
-        String nombre = (String)tablaEntidades.getValueAt(fila, 0);
-        String rol = (String)tablaEntidades.getValueAt(fila, 1);
-        String contacto = (String)tablaEntidades.getValueAt(fila, 2);
-        String ubicacion = (String)tablaEntidades.getValueAt(fila, 4);
-        FormEntidad formulario = new FormEntidad();
-    }//GEN-LAST:event_bActualizarContactoActionPerformed
-    
+   
     private void bVerHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bVerHistorialActionPerformed
         int fila = tablaEntidades.getSelectedRow();
         if(fila == -1){
@@ -429,6 +410,18 @@ public class UIVentanaPrincipal extends javax.swing.JFrame {
         app.eliminarRuta(origen, destino);
         actualizarGrafo(app.getGrafo());
     }//GEN-LAST:event_bEliminarRutaActionPerformed
+
+    private void bInspeccionarEnvioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bInspeccionarEnvioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bInspeccionarEnvioActionPerformed
+
+    private void bCancelarEnvioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bCancelarEnvioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bCancelarEnvioActionPerformed
+
+    private void bHacerEnvioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bHacerEnvioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bHacerEnvioActionPerformed
 
     /**
      * @param args the command line arguments
@@ -546,16 +539,15 @@ public class UIVentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel PanelEntidades;
     private javax.swing.JPanel PanelViajes;
     private javax.swing.JPanel PanelVistaGeneral;
-    private javax.swing.JButton bActualizarContacto;
     private javax.swing.JButton bAgregarEntidad;
     private javax.swing.JButton bAgregarRuta;
+    private javax.swing.JButton bCancelarEnvio;
     private javax.swing.JButton bEliminarEntidad;
     private javax.swing.JButton bEliminarRuta;
+    private javax.swing.JButton bHacerEnvio;
+    private javax.swing.JButton bInspeccionarEnvio;
     private javax.swing.JButton bVerHistorial;
     private javax.swing.JButton bVerInventario;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;

@@ -1,0 +1,75 @@
+import java.util.Queue;
+import java.util.Vector;
+
+public class Envio {
+    public enum ESTADO { EN_VIA, EN_ESPERA };
+    private int ID; //ID unico del envio
+    private String origen; //que entidad lo envia
+    private String destino; //cual es su destino final
+    private Queue<Ruta> camino; //conjunto de rutas que debe recorrer el envio
+    private String ubicacion; //en que ruta/entidad se encuentra el envio
+    private double tiempoEspera; //tiempo en horas
+    private ESTADO estado;
+
+
+    public Envio(int _ID, String _origen, String _destino,Vector<Ruta> _camino){
+        ID = _ID;
+        origen = _origen;
+        destino = _destino;
+        ubicacion = _origen;
+
+        for(Ruta r : _camino){
+            camino.add(r);
+        }
+        estado = ESTADO.EN_ESPERA;
+        calcularTiempo();
+
+
+    }
+
+    private void calcularTiempo(){
+        double distanciaTotal = 0;
+        for(Ruta r : camino){
+            distanciaTotal += r.getDistancia();
+        }
+        tiempoEspera = distanciaTotal/45;
+    }
+
+    public void avanzar(){
+        if(estado == ESTADO.EN_ESPERA){
+            ubicacion = camino.peek().getOrigen()+"->"+camino.peek().getDestino();
+            estado = ESTADO.EN_VIA;
+        } else {
+            ubicacion = camino.remove().getDestino();
+            estado = ESTADO.EN_ESPERA;
+        }
+        calcularTiempo();
+
+
+
+    }
+
+    public int getID() {
+        return ID;
+    }
+    public String getOrigen() {
+        return origen;
+    }
+    public String getDestino() {
+        return destino;
+    }
+    public ESTADO getEstado() {
+        return estado;
+    }
+    public double getTiempoEspera() {
+        return tiempoEspera;
+    }
+    public String getUbicacion() {
+        return ubicacion;
+    }
+
+
+
+
+
+}

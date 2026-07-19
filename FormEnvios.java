@@ -3,11 +3,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 
+import java.io.Console;
 import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -26,17 +29,21 @@ public class FormEnvios extends javax.swing.JFrame {
 
     public FormEnvios(InterfazControlador _app){
         initComponents();
-        selectorReceptor.setEditable(false);
+        selectorReceptor.setEnabled(false);
         app = _app;
     }
     public FormEnvios(InterfazControlador _app, Entidad origen){
         initComponents();
         app = _app;
 
+        DefaultComboBoxModel modelo = new DefaultComboBoxModel<>();
+        modelo.addElement(origen.getNombre());
+
+        selectorEmisor.setModel(modelo);
+        selectorEmisor.setSelectedItem(origen.getNombre());
+        selectorEmisor.setEnabled(false);
         
-        selectorEmisor.setEditable(false);
-        
-        actualizarObjetivos(origen);
+        actualizarObjetivos();
     }
 
     
@@ -55,8 +62,8 @@ public class FormEnvios extends javax.swing.JFrame {
         javax.swing.JLabel jLabel1 = new javax.swing.JLabel();
         javax.swing.JLabel jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        tablaPaquetes = new javax.swing.JTable();
+        bConfirmar = new javax.swing.JButton();
         entradaID = new javax.swing.JSpinner();
         bAgregarPaquete = new javax.swing.JButton();
         bEliminar = new javax.swing.JButton();
@@ -64,6 +71,8 @@ public class FormEnvios extends javax.swing.JFrame {
         javax.swing.JLabel jLabel5 = new javax.swing.JLabel();
         javax.swing.JLabel jLabel6 = new javax.swing.JLabel();
         entradaCantidad = new javax.swing.JSpinner();
+
+        setTitle("Solucitud de Envio");
 
         selectorEmisor.addActionListener(this::selectorEmisorActionPerformed);
 
@@ -73,12 +82,10 @@ public class FormEnvios extends javax.swing.JFrame {
 
         jLabel2.setText("Receptor");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaPaquetes.setAutoCreateColumnsFromModel(false);
+        tablaPaquetes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "ID", "Contenido", "Cantidad", "Peso"
@@ -99,9 +106,10 @@ public class FormEnvios extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tablaPaquetes);
 
-        jButton1.setText("Confirmar");
+        bConfirmar.setText("Confirmar");
+        bConfirmar.addActionListener(this::bConfirmarActionPerformed);
 
         entradaID.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
 
@@ -109,6 +117,7 @@ public class FormEnvios extends javax.swing.JFrame {
         bAgregarPaquete.addActionListener(this::bAgregarPaqueteActionPerformed);
 
         bEliminar.setText("RetirarPaquete");
+        bEliminar.addActionListener(this::bEliminarActionPerformed);
 
         jLabel4.setText("Paquetes del envio");
 
@@ -124,7 +133,7 @@ public class FormEnvios extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(207, 207, 207)
-                .addComponent(jButton1)
+                .addComponent(bConfirmar)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -184,7 +193,7 @@ public class FormEnvios extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(bEliminar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(bConfirmar)
                 .addGap(15, 15, 15))
         );
 
@@ -196,27 +205,33 @@ public class FormEnvios extends javax.swing.JFrame {
     }//GEN-LAST:event_selectorReceptorActionPerformed
 
     private void selectorEmisorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectorEmisorActionPerformed
-        Entidad emisor = app.buscarNodoNombre(selectorEmisor.getSelectedItem().toString());
-        actualizarObjetivos(emisor);
+        
     }//GEN-LAST:event_selectorEmisorActionPerformed
 
-    private void bAgregarPaqueteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAgregarPaqueteActionPerformed
-        // TODO add your handling code here:
+    private void bAgregarPaqueteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bAgregarPaqueteActionPerformed    
     }//GEN-LAST:event_bAgregarPaqueteActionPerformed
 
+    private void bConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bConfirmarActionPerformed
+        // TODO crear el envio
+        
+    }//GEN-LAST:event_bConfirmarActionPerformed
 
-    private void actualizarObjetivos(Entidad origen){
-        Set<Ruta> objetivos = app.getGrafo().outgoingEdgesOf(origen);
+    private void bEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bEliminarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_bEliminarActionPerformed
+
+
+    private void actualizarObjetivos(){
+        Set<Entidad> objetivos = app.getGrafo().vertexSet();
         Vector<String> opciones = new Vector<>();
-        for(Ruta r : objetivos){
-            opciones.add(r.getDestino());
+        for(Entidad e : objetivos){
+            opciones.add(e.getNombre());
         }
-
-        DefaultComboBoxModel modelo = new DefaultComboBoxModel<String>(opciones);
-        selectorReceptor.setModel(modelo);
-        selectorReceptor.setEditable(true);
+        selectorReceptor.setModel(new DefaultComboBoxModel<String>(opciones));
+        selectorEmisor.setModel(new DefaultComboBoxModel<>(opciones));
 
     }
+
 
     /**
      * @param args the command line arguments
@@ -245,14 +260,14 @@ public class FormEnvios extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bAgregarPaquete;
+    private javax.swing.JButton bConfirmar;
     private javax.swing.JButton bEliminar;
     private javax.swing.JSpinner entradaCantidad;
     private javax.swing.JSpinner entradaID;
-    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JComboBox<String> selectorEmisor;
     private javax.swing.JComboBox<String> selectorReceptor;
+    private javax.swing.JTable tablaPaquetes;
     // End of variables declaration//GEN-END:variables
     private InterfazControlador app;
 }

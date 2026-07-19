@@ -43,6 +43,8 @@ public class FormEntidad extends javax.swing.JFrame {
         javax.swing.JLabel jLabel7 = new javax.swing.JLabel();
         entradaRolEntidad = new javax.swing.JComboBox<>();
 
+        setTitle("Formulario de Entidad");
+
         bConfirmarFormEntidad.setText("Confirmar");
         bConfirmarFormEntidad.addActionListener(this::bConfirmarFormEntidadActionPerformed);
 

@@ -39,10 +39,6 @@ public class CadenaSuministros implements InterfazControlador {
 
     }
 
-    //=======================================================
-    //Paquetes 
-
-
 
 
     //====================================================
@@ -68,6 +64,18 @@ public class CadenaSuministros implements InterfazControlador {
 
     }
 
+    //=======================================
+    //Gestion de Envios
+
+    public void nuevoEnvio(){
+        //retirar los productos de la entidad
+        //agregarlos al objeto envio
+        //actualizarlo en la tabla de envios
+    }
+
+
+
+
     //getters
 
     public Graph<Entidad, Ruta> getGrafo() {
@@ -87,10 +95,6 @@ public class CadenaSuministros implements InterfazControlador {
         agregarRuta("A", "D");
         agregarRuta("A", "C");
         agregarRuta("C", "E");
-
-
-        buscarNodoNombre("A").recibirPaquete(new Paquete(0, "Paranganicutiniricuaro", 4, 10));
-
 
 
     }

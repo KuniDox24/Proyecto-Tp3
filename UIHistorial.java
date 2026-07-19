@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.swing.DefaultListModel;
-import javax.swing.ListModel;
 
 /**
  *
@@ -24,7 +23,7 @@ public class UIHistorial extends javax.swing.JFrame {
         initComponents();
     }
 
-    public UIHistorial(ArrayList<String> _datos){
+    public UIHistorial(Vector<String> _datos){
         initComponents();
         DefaultListModel modelo =new DefaultListModel<String>();
         modelo.addAll(_datos);
@@ -43,6 +42,8 @@ public class UIHistorial extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         listaHistorial = new javax.swing.JList<>();
         jLabel1 = new javax.swing.JLabel();
+
+        setTitle("Historial");
 
         jScrollPane2.setViewportView(listaHistorial);
 
