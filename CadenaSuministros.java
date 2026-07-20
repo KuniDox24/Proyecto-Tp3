@@ -104,6 +104,9 @@ public class CadenaSuministros implements InterfazControlador {
         );
 
         GraphPath<Entidad,Ruta> camino = buscador.getPath(origen, destino);
+        if(camino == null){
+            return null;
+        }
 
 
         return new  Vector<Ruta>(camino.getEdgeList());
@@ -135,10 +138,24 @@ public class CadenaSuministros implements InterfazControlador {
     }
 
     public void avanzarEnvio(int ID){
+        Envio avanzar = enviosActivos.get(ID);
 
-        if(enviosActivos.get(ID).avanzar()){
-            enviosActivos.remove(ID);
+        if(avanzar.getEstado() == Envio.ESTADO.EN_ESPERA){
+            Entidad almacen = buscarNodoNombre(avanzar.getUbicacion());
+            almacen.liberarEnvio(avanzar);
+            Ruta via = avanzar.geRutaActual();
+            via.comenzarTransporte(avanzar);
+
+        }else{
+            Ruta via = avanzar.geRutaActual();
+            via.finalizarTransporte(avanzar);
+            buscarNodoNombre(via.getDestino()).recibirEnvio(avanzar);
+            if(avanzar.fueEntregado()){
+                enviosActivos.remove(avanzar.getID());
+            }
+
         }
+        ventana.actualizarEnvios();
 
     }
 
@@ -173,7 +190,7 @@ public class CadenaSuministros implements InterfazControlador {
         }
 
         actualizar.nuevoDestino(destino, camino);
-
+        ventana.actualizarEnvios();
         return 0;
     }
 
@@ -214,10 +231,41 @@ public class CadenaSuministros implements InterfazControlador {
         return modelo;
 
         
-
     }
 
+    public DefaultTableModel getTablaEnviosEntidad(DefaultTableModel modelo, String entidad){
+        modelo.setRowCount(0);
+        Entidad seleccionado = buscarNodoNombre(entidad);
+        for(Envio e : seleccionado.getEnEspera()){
+            Object[] fila = {
+                e.getID(),
+                e.getOrigen(),
+                e.getDestino(), 
+                e.getContenido()
+            };
+            modelo.addRow(fila);
+        }
+        
+        return modelo;
+    }
 
+    public DefaultTableModel getTablaEnviosRuta(DefaultTableModel modelo, String origen,String destino){
+        modelo.setRowCount(0);
+        Ruta seleccionado = grafo.getEdge(buscarNodoNombre(origen), buscarNodoNombre(destino));
+
+        for(Envio e : seleccionado.getEnCamino()){
+            Object[] fila = {
+                e.getID(),
+                e.getOrigen(),
+                e.getDestino(), 
+                e.getContenido(),
+                e.getTiempoEspera()
+            };
+            modelo.addRow(fila);
+        }
+        
+        return modelo;
+    }
 
     //getters
 

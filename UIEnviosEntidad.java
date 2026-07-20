@@ -24,10 +24,14 @@ public class UIEnviosEntidad extends javax.swing.JFrame {
         initComponents();
     }
 
-    public UIEnviosEntidad( InterfazControlador _app){
+    public UIEnviosEntidad( InterfazControlador _app,String _seleccionado){
         initComponents();
         app = _app;
+        seleccionado = _seleccionado;
+        actualizar();
     }
+    
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -40,12 +44,11 @@ public class UIEnviosEntidad extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaEnvios = new javax.swing.JTable();
-        javax.swing.JLabel jLabel1 = new javax.swing.JLabel();
         bModificarDestino = new javax.swing.JButton();
         bCancelar = new javax.swing.JButton();
         bLiberar = new javax.swing.JButton();
 
-        setTitle("Vizualizar inventario");
+        setTitle("Vizualizar Envios");
         setMinimumSize(new java.awt.Dimension(300, 600));
         setPreferredSize(new java.awt.Dimension(500, 800));
 
@@ -74,9 +77,6 @@ public class UIEnviosEntidad extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tablaEnvios);
 
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Inventario");
-
         bModificarDestino.setText("Modificar Destino");
         bModificarDestino.setMaximumSize(new java.awt.Dimension(200, 30));
         bModificarDestino.setMinimumSize(new java.awt.Dimension(100, 20));
@@ -101,15 +101,11 @@ public class UIEnviosEntidad extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(16, 16, 16)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(bModificarDestino, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(bCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(bLiberar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(bModificarDestino, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(bCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(bLiberar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -119,8 +115,7 @@ public class UIEnviosEntidad extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(182, 182, 182)
+                        .addGap(198, 198, 198)
                         .addComponent(bModificarDestino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(29, 29, 29)
                         .addComponent(bLiberar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -165,8 +160,7 @@ public class UIEnviosEntidad extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "No hay una ruta entre la ubicacion actual y su destino");
             return;
         }
-
-
+        actualizar();
     
 
 
@@ -175,20 +169,30 @@ public class UIEnviosEntidad extends javax.swing.JFrame {
     private void bCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bCancelarActionPerformed
         int fila = tablaEnvios.getSelectedRow();
         if(fila == -1){
-            JOptionPane.showMessageDialog(this, "Selecciona un paquete de la tabla");
+            JOptionPane.showMessageDialog(this, "Selecciona un envio de la tabla");
             return;
         }
-
-        
+        int ID =(int)tablaEnvios.getValueAt(fila, 0);
+        app.cancelarEnvio(ID);
+        actualizar();
 
     }//GEN-LAST:event_bCancelarActionPerformed
 
     private void bLiberarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bLiberarActionPerformed
-        Set<Ruta> rutas = app.getGrafo().outgoingEdgesOf(seleccionado); //obtener todos los salientes del seleccionado
-        FormEnvios formulario = new FormEnvios(app,seleccionado);
-        formulario.setVisible(true);
-        setVisible(false);
+        int fila = tablaEnvios.getSelectedRow();
+        if(fila == -1){
+            JOptionPane.showMessageDialog(this, "Selecciona un envio de la tabla");
+            return;
+        }
+        int ID =(int)tablaEnvios.getValueAt(fila, 0);
+        app.avanzarEnvio(ID);
+        actualizar();
     }//GEN-LAST:event_bLiberarActionPerformed
+
+
+    public void actualizar(){
+        tablaEnvios.setModel(app.getTablaEnviosEntidad((DefaultTableModel)tablaEnvios.getModel(), seleccionado));
+    }
 
     /**
      * @param args the command line arguments
@@ -223,6 +227,6 @@ public class UIEnviosEntidad extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tablaEnvios;
     // End of variables declaration//GEN-END:variables
-    private Entidad seleccionado;
+    private String seleccionado;
     private InterfazControlador app;
 }

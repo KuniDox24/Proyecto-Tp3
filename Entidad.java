@@ -51,8 +51,12 @@ public class Entidad {
     //metodos
  
     public void recibirEnvio(Envio nuevo){
+        if (nuevo.getDestino().equals(nombre)) {
+            historial.add("[RECIBIDO]: "+ nuevo.getID()+"<"+nuevo.getContenido()+">");
+            return;
+        }
         enEspera.add(nuevo);
-        historial.add("[RECIBIDO]: "+ nuevo.getID()+"<"+nuevo.getContenido()+">");
+        historial.add("[RECIBIDO PARA ENVIAR]: "+ nuevo.getID()+"<"+nuevo.getContenido()+">");
     }
     
     public void eliminarEnvio(Envio cancelado){
@@ -70,6 +74,9 @@ public class Entidad {
         historial.add("[LIBERADO]: "+porLiberar.getID()+"<"+porLiberar.getContenido()+">");
         enEspera.remove(porLiberar);
 
+    }
+    public Vector<Envio> getEnEspera() {
+        return enEspera;
     }
 }
     

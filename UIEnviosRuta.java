@@ -2,10 +2,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-
-import java.util.Set;
-import java.util.Vector;
-
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -13,21 +9,27 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Nico
  */
-public class UIEnviosEntidad extends javax.swing.JFrame {
+public class UIEnviosRuta extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(UIEnviosEntidad.class.getName());
 
     /**
      * Creates new form UIInventario
      */
-    public UIEnviosEntidad() {
+    public UIEnviosRuta() {
         initComponents();
     }
 
-    public UIEnviosEntidad( InterfazControlador _app){
+    public UIEnviosRuta( InterfazControlador _app,String _origen, String _destino){
         initComponents();
         app = _app;
+        origen = _origen;
+        destino = _destino;
+        actualizar();
     }
+
+    
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -40,28 +42,26 @@ public class UIEnviosEntidad extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaEnvios = new javax.swing.JTable();
-        javax.swing.JLabel jLabel1 = new javax.swing.JLabel();
-        bModificarDestino = new javax.swing.JButton();
         bCancelar = new javax.swing.JButton();
         bLiberar = new javax.swing.JButton();
 
-        setTitle("Vizualizar inventario");
+        setTitle("Vizualizar Envios");
         setMinimumSize(new java.awt.Dimension(300, 600));
-        setPreferredSize(new java.awt.Dimension(500, 800));
 
+        tablaEnvios.setAutoCreateRowSorter(true);
         tablaEnvios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "ID", "Origen", "Destino", "Contenido"
+                "ID", "Origen", "Destino", "Contenido", "ETA"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -74,22 +74,13 @@ public class UIEnviosEntidad extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tablaEnvios);
 
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Inventario");
-
-        bModificarDestino.setText("Modificar Destino");
-        bModificarDestino.setMaximumSize(new java.awt.Dimension(200, 30));
-        bModificarDestino.setMinimumSize(new java.awt.Dimension(100, 20));
-        bModificarDestino.setPreferredSize(new java.awt.Dimension(150, 20));
-        bModificarDestino.addActionListener(this::bModificarDestinoActionPerformed);
-
         bCancelar.setText("Cancelar Envio");
         bCancelar.setMaximumSize(new java.awt.Dimension(200, 30));
         bCancelar.setMinimumSize(new java.awt.Dimension(100, 20));
         bCancelar.setPreferredSize(new java.awt.Dimension(150, 20));
         bCancelar.addActionListener(this::bCancelarActionPerformed);
 
-        bLiberar.setText("Liberar Envio");
+        bLiberar.setText("Marcar Entregado");
         bLiberar.setMaximumSize(new java.awt.Dimension(200, 30));
         bLiberar.setMinimumSize(new java.awt.Dimension(100, 20));
         bLiberar.setPreferredSize(new java.awt.Dimension(150, 20));
@@ -101,15 +92,10 @@ public class UIEnviosEntidad extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(16, 16, 16)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(bModificarDestino, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(bCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(bLiberar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(bCancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(bLiberar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -119,10 +105,7 @@ public class UIEnviosEntidad extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(182, 182, 182)
-                        .addComponent(bModificarDestino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(29, 29, 29)
+                        .addGap(247, 247, 247)
                         .addComponent(bLiberar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(29, 29, 29)
                         .addComponent(bCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -135,60 +118,33 @@ public class UIEnviosEntidad extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void bModificarDestinoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bModificarDestinoActionPerformed
-        int fila = tablaEnvios.getSelectedRow();
-        if(fila == -1){
-            JOptionPane.showMessageDialog(this, "Por favor seleccione una fila primero");
-            return;
-        }
-
-        Vector<String> opciones = app.getOpciones();
-        int ID = (int)tablaEnvios.getValueAt(fila, 0);
-        Object seleccionado = JOptionPane.showInputDialog(null,
-                                    "Selecciona un Destino",
-                                    "Selector Destino",
-                                    JOptionPane.QUESTION_MESSAGE,
-                                    null,
-                                    opciones.toArray(),
-                                    opciones.getFirst());
-        String Destino = seleccionado.toString();
-        int e = app.cambiarDestino(ID, Destino);
-        if(e == -1){
-            JOptionPane.showMessageDialog(this, "El envio esta en via, espera a un punto de control para cambiar su destino");
-            return;
-        }
-        if (e == -2) {
-            JOptionPane.showMessageDialog(this, "El nuveo destino no puede ser la ubicacion actual");
-            return;
-        }
-        if (e == -3){
-            JOptionPane.showMessageDialog(this, "No hay una ruta entre la ubicacion actual y su destino");
-            return;
-        }
-
-
-    
-
-
-    }//GEN-LAST:event_bModificarDestinoActionPerformed
-
     private void bCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bCancelarActionPerformed
         int fila = tablaEnvios.getSelectedRow();
         if(fila == -1){
-            JOptionPane.showMessageDialog(this, "Selecciona un paquete de la tabla");
+            JOptionPane.showMessageDialog(this, "Selecciona un envio de la tabla");
             return;
         }
-
-        
+        int ID =(int)tablaEnvios.getValueAt(fila, 0);
+        app.cancelarEnvio(ID);
+        actualizar();
 
     }//GEN-LAST:event_bCancelarActionPerformed
 
     private void bLiberarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bLiberarActionPerformed
-        Set<Ruta> rutas = app.getGrafo().outgoingEdgesOf(seleccionado); //obtener todos los salientes del seleccionado
-        FormEnvios formulario = new FormEnvios(app,seleccionado);
-        formulario.setVisible(true);
-        setVisible(false);
+        int fila = tablaEnvios.getSelectedRow();
+        if(fila == -1){
+            JOptionPane.showMessageDialog(this, "Selecciona un envio de la tabla");
+            return;
+        }
+        int ID =(int)tablaEnvios.getValueAt(fila, 0);
+        app.avanzarEnvio(ID);
+        actualizar();
     }//GEN-LAST:event_bLiberarActionPerformed
+
+
+    public void actualizar(){
+        tablaEnvios.setModel(app.getTablaEnviosRuta((DefaultTableModel)tablaEnvios.getModel(), origen,destino));
+    }
 
     /**
      * @param args the command line arguments
@@ -219,10 +175,10 @@ public class UIEnviosEntidad extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bCancelar;
     private javax.swing.JButton bLiberar;
-    private javax.swing.JButton bModificarDestino;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tablaEnvios;
     // End of variables declaration//GEN-END:variables
-    private Entidad seleccionado;
+    private String origen;
+    private String destino;
     private InterfazControlador app;
 }

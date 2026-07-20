@@ -33,4 +33,6 @@ public interface InterfazControlador {
     //======================
     // Tablas de UI
     public DefaultTableModel getTablaEnvios(DefaultTableModel modelo);
+    public DefaultTableModel getTablaEnviosEntidad(DefaultTableModel modelo, String entidad);
+    public DefaultTableModel getTablaEnviosRuta(DefaultTableModel modelo, String origen,String destino);
 }

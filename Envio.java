@@ -39,7 +39,11 @@ public class Envio {
         tiempoEspera = Math.round((distanciaTotal/45.0)*1000.0)/1000.0;
     }
 
-    public boolean avanzar(){
+    public void avanzar(){
+        if(camino.isEmpty()){
+            return;
+        }
+
         if(estado == ESTADO.EN_ESPERA){
             ubicacion = camino.peek().getOrigen()+"->"+camino.peek().getDestino();
             estado = ESTADO.EN_VIA;
@@ -47,11 +51,10 @@ public class Envio {
             ubicacion = camino.remove().getDestino();
             estado = ESTADO.EN_ESPERA;
             if(camino.isEmpty()){
-                return true;
+                return;
             }
         }
         calcularTiempo();
-        return false;
 
 
 
@@ -91,7 +94,9 @@ public class Envio {
     public Ruta geRutaActual(){
         return camino.peek();
     }
-
+    public boolean fueEntregado(){
+        return camino.isEmpty();
+    }
 
 
 
