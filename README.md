@@ -1,9 +1,7 @@
 # Rastreador de Paquetes V1
 
-================================================
 Rastreador de paquetes en redes de Suministros
 por: Nicola Martini
-================================================
 
 # Sobre el proyecto:
 Este es un proyecto de caracter academico realizado para demostrar el uso de grados en java, especificamente, grafos aciclicos dirigidos.
