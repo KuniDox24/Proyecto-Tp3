@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.Vector;
 
-public class Entidad {
+public class Entidad implements Serializable{
     public enum ROLES {PROVEEDOR, DISTRIBUIDOR, ALMACEN, FABRICANTE, MINORISTA};
     
     private String nombre; //nombre de la entidad

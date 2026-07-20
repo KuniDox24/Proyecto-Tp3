@@ -50,7 +50,6 @@ public class UIEnviosEntidad extends javax.swing.JFrame {
 
         setTitle("Vizualizar Envios");
         setMinimumSize(new java.awt.Dimension(300, 600));
-        setPreferredSize(new java.awt.Dimension(500, 800));
 
         tablaEnvios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

@@ -6,8 +6,6 @@ import org.jgrapht.*;
 
 public interface InterfazControlador {
 
-    public Entidad buscarNodoNombre(String Nombre);
-
     public void agregarNodo(String nombre,int[] ubicacion ,String contacto, String rol);
     public int eliminarNodo(String Nombre);
     
@@ -29,6 +27,7 @@ public interface InterfazControlador {
     //======================
     // UI
     public Vector<String> getOpciones();
+    public Vector<String> getHistorial(String entidad);
 
     //======================
     // Tablas de UI

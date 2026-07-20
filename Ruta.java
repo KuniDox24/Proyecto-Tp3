@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.Vector;
 
-public class Ruta {
+public class Ruta implements Serializable{
     private String origen; //donde empieza la ruta
     private String destino; //donde termina la ruta
     private double distancia; //distancia de origen a destino

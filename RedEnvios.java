@@ -11,26 +11,23 @@ import org.jgrapht.graph.AsWeightedGraph;
 import org.jgrapht.graph.SimpleDirectedWeightedGraph;
 
 
-public class CadenaSuministros implements InterfazControlador {
+public class RedEnvios {
     private Graph<Entidad,Ruta> grafo;
     private HashMap<Integer,Envio> enviosActivos;
-    private UIVentanaPrincipal ventana;
 
-    public CadenaSuministros(){
+    
+
+    public RedEnvios(){
         grafo = new SimpleDirectedWeightedGraph<>(Ruta.class);
-        ventana = new UIVentanaPrincipal(this);
         enviosActivos = new HashMap<>();
-        preCargar();
-        //TODO eliminar precarga
     }
 
     //=====================================================
     //Gestion de Entidades (Nodos en grafo)
     public void agregarNodo(String nombre,int[] ubicacion ,String contacto, String rol){
         Entidad nuevo = new Entidad(nombre,ubicacion,contacto,rol);
-        
         grafo.addVertex(nuevo);
-        ventana.actualizarGrafo(grafo);
+        guardarTodo();
 
     }
 
@@ -52,7 +49,7 @@ public class CadenaSuministros implements InterfazControlador {
         }
 
         grafo.removeVertex(aEliminar);
-        ventana.actualizarGrafo(grafo);
+        guardarTodo();
         return 0;
     }
 
@@ -73,7 +70,8 @@ public class CadenaSuministros implements InterfazControlador {
 
         Ruta nueva = new Ruta(origen, objetivo, calcularDistancia(a.getUbicacion(), b.getUbicacion()));
         grafo.addEdge(a, b, nueva);
-        ventana.actualizarGrafo(grafo);
+        guardarTodo();
+        
     }
 
     public int eliminarRuta(String origen, String destino){
@@ -83,7 +81,7 @@ public class CadenaSuministros implements InterfazControlador {
             return -1;
         }
         grafo.removeEdge(aEliminar);
-        ventana.actualizarGrafo(grafo);
+        guardarTodo();
         return 0;
     }
 
@@ -133,7 +131,7 @@ public class CadenaSuministros implements InterfazControlador {
         buscarNodoNombre(origen).recibirEnvio(nuevo);
         enviosActivos.put(ID, nuevo);
 
-        ventana.actualizarEnvios();
+        guardarTodo();
         return 0; //OK
     }
 
@@ -155,8 +153,7 @@ public class CadenaSuministros implements InterfazControlador {
             }
 
         }
-        ventana.actualizarEnvios();
-
+        guardarTodo();
     }
 
     public void cancelarEnvio(int ID){
@@ -170,7 +167,8 @@ public class CadenaSuministros implements InterfazControlador {
             String nombre = cancelado.getUbicacion();
             buscarNodoNombre(nombre).eliminarEnvio(cancelado);
         }
-        ventana.actualizarEnvios();
+        guardarTodo();
+        
     }
 
     public int cambiarDestino(int ID, String destino){
@@ -190,112 +188,45 @@ public class CadenaSuministros implements InterfazControlador {
         }
 
         actualizar.nuevoDestino(destino, camino);
-        ventana.actualizarEnvios();
+        guardarTodo();
         return 0;
     }
 
-    //=========================================
-    //UI
-
-    public Vector<String> getOpciones(){
-
-        Set<Entidad> objetivos = grafo.vertexSet();
-        Vector<String> opciones = new Vector<>();
-        for(Entidad e : objetivos){
-            opciones.add(e.getNombre());
+    public void cargarTodo(){
+        Object datosGrafo = GestorArchivos.cargarDatos("Grafo_Rutas.dat");
+        if(datosGrafo != null){
+            grafo = (Graph<Entidad,Ruta>)datosGrafo;
         }
-        return opciones;
-
-    }
+        Object datosEnvios = GestorArchivos.cargarDatos("Envios_Activos.dat");
+        if(datosEnvios != null){
+            enviosActivos = (HashMap<Integer,Envio>)datosEnvios;
+        }
     
-    //=================================
-    // MODELOS DE UI
-
-    public DefaultTableModel getTablaEnvios(DefaultTableModel modelo){
-        modelo.setRowCount(0);
-        for(Envio e : getEnviosActivos()){
-            Object[] fila = {
-                e.getID(),
-                e.getContenido(),
-                e.getUbicacion(),
-                e.getEstado().toString(),
-                e.getTiempoEspera(),
-                e.getDestino(), 
-                e.getOrigen()
-                
-                
-            };
-            modelo.addRow(fila);
-        }
-        
-        return modelo;
-
-        
     }
 
-    public DefaultTableModel getTablaEnviosEntidad(DefaultTableModel modelo, String entidad){
-        modelo.setRowCount(0);
-        Entidad seleccionado = buscarNodoNombre(entidad);
-        for(Envio e : seleccionado.getEnEspera()){
-            Object[] fila = {
-                e.getID(),
-                e.getOrigen(),
-                e.getDestino(), 
-                e.getContenido()
-            };
-            modelo.addRow(fila);
-        }
+    public void guardarTodo(){
         
-        return modelo;
+        GestorArchivos.guardarDatos(enviosActivos, "Envios_Activos.dat");
+        GestorArchivos.guardarDatos(grafo, "Grafo_Rutas.dat");
     }
-
-    public DefaultTableModel getTablaEnviosRuta(DefaultTableModel modelo, String origen,String destino){
-        modelo.setRowCount(0);
-        Ruta seleccionado = grafo.getEdge(buscarNodoNombre(origen), buscarNodoNombre(destino));
-
-        for(Envio e : seleccionado.getEnCamino()){
-            Object[] fila = {
-                e.getID(),
-                e.getOrigen(),
-                e.getDestino(), 
-                e.getContenido(),
-                e.getTiempoEspera()
-            };
-            modelo.addRow(fila);
-        }
-        
-        return modelo;
-    }
-
     //getters
 
     public Graph<Entidad, Ruta> getGrafo() {
         return grafo;
     }
 
-    private void preCargar(){
-        agregarNodo("A", new int[]{-2,5}, "Senal de humo", "MINORISTA");
-        agregarNodo("B", new int[]{10,5}, "Senal de humo","ALMACEN");
-        agregarNodo("C", new int[]{2,6}, "Senal de humo","PROVEEDOR");
-        agregarNodo("D", new int[]{-2,3}, "Senal de humo","ALMACEN");
-        agregarNodo("E", new int[]{6,12}, "Senal de humo","DISTRIBUIDOR");
-
-        agregarRuta("A", "B");
-        agregarRuta("E", "B");
-        agregarRuta("D", "B");
-        agregarRuta("A", "D");
-        agregarRuta("A", "C");
-        agregarRuta("C", "E");
-
-        nuevoEnvio("A", "E","Berenjenas");
+    public Ruta getRuta(String origen, String destino){
+        return grafo.getEdge(buscarNodoNombre(origen), buscarNodoNombre(destino));
 
     }
-
-
-    public static void main(String[] args) {
-        //Inicializar la app
-        CadenaSuministros app = new CadenaSuministros();
-
+    
+    public Entidad getEntidad(String nombre){
+        return buscarNodoNombre(nombre);
     }
+    
+    public Set<Entidad> getEntidades(){
+        return grafo.vertexSet();
+    }
+    
     
 }

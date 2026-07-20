@@ -1,8 +1,9 @@
+import java.io.Serializable;
 import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.Vector;
 
-public class Envio {
+public class Envio implements Serializable {
     public enum ESTADO { EN_VIA, EN_ESPERA };
     private int ID; //ID unico del envio
     private String contenido; //contenido del envio
