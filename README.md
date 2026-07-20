@@ -15,11 +15,11 @@ Para instalar este programa necesitas tener ya instalado:
 
 Si ya cumples los requerimientos puedes seguir estos pasos:
 
-1- Descarga Build.zip
-[Download Latest Release ZIP](https://github.com/KuniDox24/Proyecto-Tp3)
+1. Descarga Build.zip
+[Descargar](https://github.com/KuniDox24/Proyecto-Tp3/releases/download/1.0/Build.zip)
 
-2- Extrae la carpeta "Rastreador de Paquetes a donde quieras tener el programa
+2. Extrae la carpeta "Rastreador de Paquetes a donde quieras tener el programa
 
-3- Haz doble clic en el archivo run.bat
+3. Haz doble clic en el archivo run.bat
 
-4- Listo! ya puedes probar el Rastreador de Paquetes
+4. Listo! ya puedes probar el Rastreador de Paquetes
