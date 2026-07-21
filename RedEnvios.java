@@ -1,10 +1,9 @@
+import java.util.ArrayDeque;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.Vector;
 import java.util.function.Function;
-
-import javax.swing.table.DefaultTableModel;
-
 import org.jgrapht.*;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 import org.jgrapht.graph.AsWeightedGraph;
@@ -14,20 +13,43 @@ import org.jgrapht.graph.SimpleDirectedWeightedGraph;
 public class RedEnvios {
     private Graph<Entidad,Ruta> grafo;
     private HashMap<Integer,Envio> enviosActivos;
+    private HashMap<String, Entidad> entidadesPorUbicacion;
 
     
 
     public RedEnvios(){
         grafo = new SimpleDirectedWeightedGraph<>(Ruta.class);
         enviosActivos = new HashMap<>();
+        entidadesPorUbicacion = new HashMap<>();
     }
 
     //=====================================================
     //Gestion de Entidades (Nodos en grafo)
-    public void agregarNodo(String nombre,int[] ubicacion ,String contacto, String rol){
+    private String claveUbicacion(int[] ubicacion) {
+        if (ubicacion == null || ubicacion.length < 2) {
+            return "";
+        }
+        return ubicacion[0] + "," + ubicacion[1];
+    }
+
+    private void reconstruirIndiceUbicaciones() {
+        entidadesPorUbicacion.clear();
+        for (Entidad entidad : grafo.vertexSet()) {
+            entidadesPorUbicacion.put(claveUbicacion(entidad.getUbicacion()), entidad);
+        }
+    }
+
+    public boolean agregarNodo(String nombre,int[] ubicacion ,String contacto, String rol){
+        String clave = claveUbicacion(ubicacion);
+        if (entidadesPorUbicacion.containsKey(clave)) {
+            return false;
+        }
+
         Entidad nuevo = new Entidad(nombre,ubicacion,contacto,rol);
         grafo.addVertex(nuevo);
+        entidadesPorUbicacion.put(clave, nuevo);
         guardarTodo();
+        return true;
 
     }
 
@@ -44,11 +66,15 @@ public class RedEnvios {
     public int eliminarNodo(String Nombre){
 
         Entidad aEliminar = buscarNodoNombre(Nombre);
+        if(aEliminar == null){
+            return -2;
+        }
         if(aEliminar.tieneEnvios()){
             return -1;
         }
 
         grafo.removeVertex(aEliminar);
+        entidadesPorUbicacion.remove(claveUbicacion(aEliminar.getUbicacion()));
         guardarTodo();
         return 0;
     }
@@ -63,14 +89,47 @@ public class RedEnvios {
         return Math.round(resultado*1000.0)/1000.0;
     }
 
-    public void agregarRuta(String origen, String objetivo){
+    //revisa si se crea un ciclo
+    private boolean creaCiclo(Entidad origen, Entidad destino) {
+        if (origen == null || destino == null || origen.equals(destino)) {
+            return false;
+        }
+
+        Set<Entidad> visitados = new HashSet<>();
+        ArrayDeque<Entidad> porVisitar = new ArrayDeque<>();
+        porVisitar.push(destino);
+        visitados.add(destino);
+
+        while (!porVisitar.isEmpty()) {
+            Entidad actual = porVisitar.pop();
+            for (Ruta ruta : grafo.outgoingEdgesOf(actual)) {
+                Entidad siguiente = grafo.getEdgeTarget(ruta);
+                if (siguiente.equals(origen)) {
+                    return true;
+                }
+                if (!visitados.contains(siguiente)) {
+                    visitados.add(siguiente);
+                    porVisitar.push(siguiente);
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public boolean agregarRuta(String origen, String objetivo){
 
         Entidad a  = buscarNodoNombre(origen);
         Entidad b = buscarNodoNombre(objetivo);
 
+        if(!a.puedeEnviar(b)){
+            return false;
+        }
+
         Ruta nueva = new Ruta(origen, objetivo, calcularDistancia(a.getUbicacion(), b.getUbicacion()));
         grafo.addEdge(a, b, nueva);
         guardarTodo();
+        return true;
         
     }
 
@@ -201,6 +260,7 @@ public class RedEnvios {
         if(datosEnvios != null){
             enviosActivos = (HashMap<Integer,Envio>)datosEnvios;
         }
+        reconstruirIndiceUbicaciones();
     
     }
 

@@ -1,4 +1,6 @@
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Nico
@@ -190,7 +192,10 @@ public class FormEntidad extends javax.swing.JFrame {
         String contacto = entradaContactoEntidad.getText();
         String rol = entradaRolEntidad.getSelectedItem().toString();
         int[] ubicacion = {(Integer)ubicacionEntidadX.getValue(),(Integer)ubicacionEntidadY.getValue()};
-        app.agregarNodo(nombre, ubicacion, contacto, rol);
+        if(!app.agregarNodo(nombre, ubicacion, contacto, rol)){
+            JOptionPane.showMessageDialog(this, "Ya existe una entidad en esa ubicación.", "Ubicación duplicada", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
         
         setVisible(false);
 

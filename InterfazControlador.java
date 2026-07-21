@@ -4,9 +4,11 @@ import javax.swing.table.DefaultTableModel;
 
 import org.jgrapht.*;
 
+import com.mxgraph.swing.mxGraphComponent;
+
 public interface InterfazControlador {
 
-    public void agregarNodo(String nombre,int[] ubicacion ,String contacto, String rol);
+    public boolean agregarNodo(String nombre,int[] ubicacion ,String contacto, String rol);
     public int eliminarNodo(String Nombre);
     
     public Graph<Entidad, Ruta> getGrafo();
@@ -28,6 +30,8 @@ public interface InterfazControlador {
     // UI
     public Vector<String> getOpciones();
     public Vector<String> getHistorial(String entidad);
+
+    public mxGraphComponent getGrafoVisual();
 
     //======================
     // Tablas de UI

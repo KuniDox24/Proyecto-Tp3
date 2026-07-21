@@ -2,7 +2,7 @@ import java.io.Serializable;
 import java.util.Vector;
 
 public class Entidad implements Serializable{
-    public enum ROLES {PROVEEDOR, DISTRIBUIDOR, ALMACEN, FABRICANTE, MINORISTA};
+    public enum ROLES {PROVEEDOR, FABRICANTE, DISTRIBUIDOR, ALMACEN, MINORISTA};
     
     private String nombre; //nombre de la entidad
     private Vector<String> historial; //historial de entradas y salidas  de envios
@@ -29,6 +29,12 @@ public class Entidad implements Serializable{
         enEspera = new Vector<>();
         historial = new Vector<>();
         rol = ROLES.valueOf(_rol);
+    }
+
+    public boolean puedeEnviar(Entidad objetivo){
+        ROLES rolObjetivo = ROLES.valueOf(objetivo.getRol());
+        return rol.ordinal() < rolObjetivo.ordinal();
+
     }
 
     //getters

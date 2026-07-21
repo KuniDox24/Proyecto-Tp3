@@ -1,12 +1,4 @@
 import org.jgrapht.Graph;
-import org.jgrapht.ext.*;
-import org.jgrapht.graph.DefaultWeightedEdge;
-
-import com.mxgraph.model.mxGeometry;
-import com.mxgraph.model.mxICell;
-import com.mxgraph.swing.mxGraphComponent;
-import com.mxgraph.util.mxConstants;
-import java.util.Map;
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -364,12 +356,6 @@ public class UIVentanaPrincipal extends javax.swing.JFrame {
 
 
 
-
-
-
-
-
-
     //===============================================================================
     //MENU DE ENTIDADES
 
@@ -397,8 +383,7 @@ public class UIVentanaPrincipal extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this,"Porfavor, distribuya los envios pendientes de la entidad ptimero");
         }
     }//GEN-LAST:event_bEliminarEntidadActionPerformed
-   
-    //TODO desacoplar Historial
+
     private void bVerHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bVerHistorialActionPerformed
         int fila = tablaEntidades.getSelectedRow();
         if(fila == -1){
@@ -410,7 +395,6 @@ public class UIVentanaPrincipal extends javax.swing.JFrame {
         ventana.setVisible(true);
     }//GEN-LAST:event_bVerHistorialActionPerformed
 
-    //TODO ayuda
     private void bVerEnviosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bVerEnviosActionPerformed
         int fila = tablaEntidades.getSelectedRow();
         if(fila == -1){
@@ -468,7 +452,13 @@ public class UIVentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_verEnviosRutaActionPerformed
 
     private void bHacerEnvio1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bHacerEnvio1ActionPerformed
-        // TODO add your handling code here:
+        int fila = tablaEnvios.getSelectedRow();
+        if (fila == -1){
+            JOptionPane.showMessageDialog(this, "Por facor seleccione una fila primero");
+            return;
+        }
+        int ID = (int)tablaEnvios.getValueAt(fila, 0);
+        app.avanzarEnvio(ID);
     }//GEN-LAST:event_bHacerEnvio1ActionPerformed
 
     //al presionar cancelar envio
@@ -566,44 +556,17 @@ public class UIVentanaPrincipal extends javax.swing.JFrame {
 
     //actualiza el grafo en pantalla TODO desacoplar
     private void setGrafo(Graph<Entidad,Ruta> grafoOriginal){
-        //Limpia el panel del grafo anterior
         PanelVistaGeneral.removeAll();
         PanelVistaGeneral.setLayout(new java.awt.BorderLayout());
 
-        //crea un adaptador usando el grafo 
-        JGraphXAdapter<Entidad, Ruta> adapter = new JGraphXAdapter<>(grafoOriginal);
+        javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane(app.getGrafoVisual());
+        scrollPane.setHorizontalScrollBarPolicy(javax.swing.JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setVerticalScrollBarPolicy(javax.swing.JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+        scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
+        scrollPane.getViewport().setScrollMode(javax.swing.JViewport.SIMPLE_SCROLL_MODE);
 
-        //crea un elemento visual usando el adaptador
-        grafoVisual = new mxGraphComponent(adapter);
-        grafoVisual.setPreferredSize(new java.awt.Dimension(600, 400));
-
-        //asigna posiciones a los nodos segun su ubicacion
-        for (Map.Entry<Entidad, mxICell> entry : adapter.getVertexToCellMap().entrySet()) {
-            Entidad entidad = entry.getKey();
-            Object cell = entry.getValue();
-            int[] ubicacion = entidad.getUbicacion();
-
-            int x = ubicacion[0] * 50 + 250;
-            int y = ubicacion[1] * 50 + 150;
-
-            mxGeometry geometry = new mxGeometry(x, y, 90, 30);
-            geometry.setRelative(false);
-            adapter.getModel().setGeometry(cell, geometry);
-        }
-
-        adapter.getStylesheet().getDefaultEdgeStyle().put(mxConstants.STYLE_NOLABEL, "false");
-        adapter.getStylesheet().getDefaultEdgeStyle().put(mxConstants.STYLE_EDGE, "orthogonalEdgeStyle");
-        adapter.getStylesheet().getDefaultEdgeStyle().put(mxConstants.STYLE_ROUNDED, "true");
-
-        grafoVisual.getGraph().setCellsEditable(false);
-        grafoVisual.getGraph().setCellsResizable(false);
-        grafoVisual.getGraph().setCellsMovable(false);
-        grafoVisual.getGraph().setVertexLabelsMovable(false);
-        grafoVisual.getGraph().setCellsLocked(true);
-
-
-        
-        PanelVistaGeneral.add(grafoVisual, java.awt.BorderLayout.CENTER);
+        PanelVistaGeneral.add(scrollPane, java.awt.BorderLayout.CENTER);
         PanelVistaGeneral.revalidate();
         PanelVistaGeneral.repaint();
     }
@@ -629,6 +592,5 @@ public class UIVentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JTable tablaRutas;
     private javax.swing.JButton verEnviosRuta;
     // End of variables declaration//GEN-END:variables
-    private mxGraphComponent grafoVisual; //componente visual para ver grafos
     private InterfazControlador app;
 }
