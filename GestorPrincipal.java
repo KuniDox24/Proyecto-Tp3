@@ -35,9 +35,12 @@ public class GestorPrincipal implements InterfazControlador {
     //==============================================================
 
     //ENTIDADES
-    public void agregarNodo(String nombre,int[] ubicacion ,String contacto, String rol){
-        app.agregarNodo(nombre, ubicacion, contacto, rol);
-        ventana.actualizarGrafo(getGrafo());
+    public boolean agregarNodo(String nombre,int[] ubicacion ,String contacto, String rol){
+        boolean exito = app.agregarNodo(nombre, ubicacion, contacto, rol);
+        if(exito){
+            ventana.actualizarGrafo(getGrafo());
+        }
+        return exito;
     }
 
     public int eliminarNodo(String Nombre){
