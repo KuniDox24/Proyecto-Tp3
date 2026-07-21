@@ -41,7 +41,6 @@ public class Ruta implements Serializable{
 
     public void cancelarTransporte(Envio cancelado){
         enCamino.remove(cancelado);
-
     }
 
     public boolean tieneEnvios(){

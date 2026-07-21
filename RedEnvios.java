@@ -63,6 +63,47 @@ public class RedEnvios {
         return encontrado;
     }
 
+    private void manejarEnvioAfectado(Envio envio, String nuevaUbicacion){
+        if (envio == null || envio.getEstado() != Envio.ESTADO.EN_VIA) {
+            return;
+        }
+
+        Ruta rutaActual = envio.geRutaActual();
+        if (rutaActual == null) {
+            return;
+        }
+
+        rutaActual.cancelarTransporte(envio);
+        envio.cancelarRutaActual();
+        envio.reprogramar(nuevaUbicacion, envio.getRutasRestantes());
+    }
+
+    //Reorganiza los nodos que estaban a punto de entrar al nodo eliminado
+    private void manejarEnviosAfectadosPorNodo(String nombre){
+        for (Envio envio : new Vector<>(enviosActivos.values())) {
+            if (envio.getEstado() != Envio.ESTADO.EN_VIA || envio.geRutaActual() == null) {
+                continue;
+            }
+            //revisa todos los que estan en_via y ve si el eliminado era su origen o destino
+            Ruta rutaActual = envio.geRutaActual();
+            if (rutaActual.getOrigen().equals(nombre) || rutaActual.getDestino().equals(nombre)) {
+                String nuevaUbicacion = rutaActual.getOrigen().equals(nombre) ? rutaActual.getDestino() : rutaActual.getOrigen();
+                manejarEnvioAfectado(envio, nuevaUbicacion);
+            }
+        }
+    }
+
+    private void manejarEnviosAfectadosPorRuta(Ruta rutaEliminada){
+        for (Envio envio : new Vector<>(enviosActivos.values())) {
+            if (envio.getEstado() != Envio.ESTADO.EN_VIA || envio.geRutaActual() == null) {
+                continue;
+            }
+            if (envio.geRutaActual().equals(rutaEliminada)) {
+                manejarEnvioAfectado(envio, rutaEliminada.getOrigen());
+            }
+        }
+    }
+
     public int eliminarNodo(String Nombre){
 
         Entidad aEliminar = buscarNodoNombre(Nombre);
@@ -72,6 +113,8 @@ public class RedEnvios {
         if(aEliminar.tieneEnvios()){
             return -1;
         }
+
+        manejarEnviosAfectadosPorNodo(Nombre);
 
         grafo.removeVertex(aEliminar);
         entidadesPorUbicacion.remove(claveUbicacion(aEliminar.getUbicacion()));
@@ -87,34 +130,6 @@ public class RedEnvios {
     private double calcularDistancia(int[] a,int[] b){
         double resultado = Math.sqrt(Math.pow((b[0]-a[0]), 2) + Math.pow((b[1] - a[1]),2) ); 
         return Math.round(resultado*1000.0)/1000.0;
-    }
-
-    //revisa si se crea un ciclo
-    private boolean creaCiclo(Entidad origen, Entidad destino) {
-        if (origen == null || destino == null || origen.equals(destino)) {
-            return false;
-        }
-
-        Set<Entidad> visitados = new HashSet<>();
-        ArrayDeque<Entidad> porVisitar = new ArrayDeque<>();
-        porVisitar.push(destino);
-        visitados.add(destino);
-
-        while (!porVisitar.isEmpty()) {
-            Entidad actual = porVisitar.pop();
-            for (Ruta ruta : grafo.outgoingEdgesOf(actual)) {
-                Entidad siguiente = grafo.getEdgeTarget(ruta);
-                if (siguiente.equals(origen)) {
-                    return true;
-                }
-                if (!visitados.contains(siguiente)) {
-                    visitados.add(siguiente);
-                    porVisitar.push(siguiente);
-                }
-            }
-        }
-
-        return false;
     }
 
     public boolean agregarRuta(String origen, String objetivo){
@@ -136,9 +151,15 @@ public class RedEnvios {
     public int eliminarRuta(String origen, String destino){
 
         Ruta aEliminar = grafo.getEdge(buscarNodoNombre(origen), buscarNodoNombre(destino));
+        if(aEliminar == null){
+            return -2;
+        }
         if(aEliminar.tieneEnvios()){
             return -1;
         }
+
+        manejarEnviosAfectadosPorRuta(aEliminar);
+
         grafo.removeEdge(aEliminar);
         guardarTodo();
         return 0;
@@ -194,13 +215,18 @@ public class RedEnvios {
         return 0; //OK
     }
 
-    public void avanzarEnvio(int ID){
+    public int avanzarEnvio(int ID){
         Envio avanzar = enviosActivos.get(ID);
 
         if(avanzar.getEstado() == Envio.ESTADO.EN_ESPERA){
             Entidad almacen = buscarNodoNombre(avanzar.getUbicacion());
-            almacen.liberarEnvio(avanzar);
             Ruta via = avanzar.geRutaActual();
+        
+            //verificamos si esa ruta aun existe
+            if(!grafo.edgesOf(almacen).contains(via)){
+                return -1; //el siguiente paso no existe
+            }
+            almacen.liberarEnvio(avanzar);
             via.comenzarTransporte(avanzar);
 
         }else{
@@ -213,6 +239,7 @@ public class RedEnvios {
 
         }
         guardarTodo();
+        return 0;
     }
 
     public void cancelarEnvio(int ID){

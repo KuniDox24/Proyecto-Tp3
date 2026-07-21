@@ -71,6 +71,26 @@ public class Envio implements Serializable {
 
     }
 
+    public void cancelarRutaActual(){
+        if(!camino.isEmpty()){
+            camino.remove();
+        }
+    }
+
+    public void reprogramar(String nuevaUbicacion, Vector<Ruta> rutasRestantes){
+        ubicacion = nuevaUbicacion;
+        estado = ESTADO.EN_ESPERA;
+        camino = new ArrayDeque<>();
+        for(Ruta ruta : rutasRestantes){
+            camino.add(ruta);
+        }
+        calcularTiempo();
+    }
+
+    public Vector<Ruta> getRutasRestantes(){
+        return new Vector<>(camino);
+    }
+
     public int getID() {
         return ID;
     }

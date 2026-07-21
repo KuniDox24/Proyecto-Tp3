@@ -46,6 +46,7 @@ public class GestorPrincipal implements InterfazControlador {
     public int eliminarNodo(String Nombre){
         int exito = app.eliminarNodo(Nombre);
         ventana.actualizarGrafo(getGrafo());
+        ventana.actualizarEnvios();
 
         return exito;
     }
@@ -62,6 +63,7 @@ public class GestorPrincipal implements InterfazControlador {
     public int eliminarRuta(String origen, String destino){
         int exito = app.eliminarRuta(origen, destino);
         ventana.actualizarGrafo(getGrafo());
+        ventana.actualizarEnvios();
         return exito;
     }
 
@@ -71,7 +73,10 @@ public class GestorPrincipal implements InterfazControlador {
         return app.getEnviosActivos();
     }
     public void avanzarEnvio(int ID){
-        app.avanzarEnvio(ID);
+        if(app.avanzarEnvio(ID) == -1){
+            JOptionPane.showMessageDialog(ventana,"La ruta ya no existe, porfavor actualice el destino o cancele el envio");
+        }
+
         ventana.actualizarEnvios();
     }
     public int nuevoEnvio(String origen, String destino, String contenido){
